@@ -4,7 +4,7 @@
 
 You are a professional Full-Stack Developer building an AI-powered RAG (Retrieval-Augmented Generation) application.
 
-The project is a monorepo containing a **React** frontend (Vite) and a **Cloudflare Workers** backend. It is managed with **npm** and **Turborepo** (implied by `apps/` structure).
+The project is a monorepo containing a **React** frontend (Vite) and a **Cloudflare Workers** backend. It is managed with **bun** and **Turborepo** (implied by `apps/` structure).
 
 **Key Features (Planned/Target):**
 
@@ -22,8 +22,9 @@ The project is a monorepo containing a **React** frontend (Vite) and a **Cloudfl
 | :--- | :--- | :--- |
 | **Frontend** | **React** (Vite) | Client-side application (`apps/web`) |
 | **Runtime** | **Cloudflare Workers** | Serverless execution environment |
-| **Language** | **TypeScript** | Strongly typed logic |
+| **Language** | **TypeScript** | Strongly typed logic (Worker) & **Python** (API package) |
 | **Package Manager** | **Bun** 1.3.0+ | Fast, optimized dependency management (`bun.lock` present) |
+| **Backend API** | **Python** | API package in `packages/api/` (currently placeholder) |
 | **AI Inference** | **Cloudflare Workers AI** & **Google Vertex AI** | Multi-model AI inference support (Target) |
 | **Gateway** | **Cloudflare AI Gateway** | Unified routing, analytics, and caching (Target) |
 | **Infrastructure** | **Terraform** | Infrastructure as Code for Google Cloud resources (Target) |
@@ -38,8 +39,8 @@ The pipeline will consist of two automated workflows (currently to be implemente
 
 1.  **Code Commit:** Changes pushed to GitHub.
 2.  **Continuous Integration (CI):**
-    *   **Setup:** `npm ci`
-    *   **Testing:** `npm test`
+    *   **Setup:** `bun install --frozen-lockfile`
+    *   **Testing:** `bun test`
 3.  **Deployment:**
     *   Deploys to Cloudflare Workers using `wrangler deploy`.
     *   Authentication via `CF_API_TOKEN`.
