@@ -2,7 +2,7 @@
 # Reference: https://bun.sh/docs/bundler/config
 
 [packages]
-# Use exact versions specified in package.json
+# Respect semver ranges from package.json
 exact = false
 
 [install]
