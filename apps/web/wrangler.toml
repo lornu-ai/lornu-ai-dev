@@ -1,10 +1,17 @@
 name = "lornu-ai"
-pages_build_output_dir = "dist"
+main = "worker.ts"
 compatibility_date = "2024-11-24"
 
-[build]
-command = "npm run build"
-watch_dir = "src"
+# Serve the built React app (Vite output)
+assets = { directory = "./dist", binding = "ASSETS" }
 
-[observability.logs]
+[observability]
 enabled = true
+
+[[routes]]
+pattern = "lornu.ai"
+custom_domain = true
+
+[[routes]]
+pattern = "www.lornu.ai"
+custom_domain = true
