@@ -20,7 +20,7 @@ This application uses **Cloudflare Workers** (not Cloudflare Pages) to serve sta
 
 ### Prerequisites
 
-- npm or bun
+- bun
 - Wrangler CLI (installed as dev dependency)
 - [Pre-commit](https://pre-commit.com/) (recommended for code quality & security)
 
@@ -29,47 +29,47 @@ This application uses **Cloudflare Workers** (not Cloudflare Pages) to serve sta
 
 This project uses pre-commit hooks to enforce code quality and security standards (blocking secrets, checking syntax).
 
-1. **Install pre-commit:**
-   ```bash
-   brew install pre-commit  # macOS
-   pip install pre-commit   # Universal
-   ```
+1.  **Install pre-commit:**
+    ```bash
+    brew install pre-commit  # macOS
+    pip install pre-commit   # Universal
+    ```
 
-2. **Install hooks in the repo:**
-   ```bash
-   pre-commit install
-   ```
+2.  **Install hooks in the repo:**
+    ```bash
+    pre-commit install
+    ```
 
-3. **Run checks manually:**
-   ```bash
-   pre-commit run --all-files
-   ```
+3.  **Run checks manually:**
+    ```bash
+    pre-commit run --all-files
+    ```
 
 ### Local Development
 
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+1.  **Install dependencies:**
+    ```bash
+    bun install
+    ```
 
-2. **Run development server with Vite:**
-   ```bash
-   npm run dev
-   ```
-   This starts the Vite dev server at `http://localhost:5173`
+2.  **Run development server with Vite:**
+    ```bash
+    bun run dev
+    ```
+    This starts the Vite dev server at `http://localhost:5173`
 
-3. **Test with Wrangler (production-like environment):**
-   ```bash
-   npm run build
-   npx wrangler dev
-   ```
-   This runs the actual worker locally with the built assets
+3.  **Test with Wrangler (production-like environment):**
+    ```bash
+    bun run build
+    bunx wrangler dev
+    ```
+    This runs the actual worker locally with the built assets
 
 ### Build
 
 Build the production bundle:
 ```bash
-npm run build
+bun run build
 ```
 
 The output is generated in the `dist/` directory.
@@ -80,9 +80,9 @@ The output is generated in the `dist/` directory.
 
 This project uses **Cloudflare's Git integration** for automatic deployments:
 
-1. Pushing to `main` branch triggers automatic deployment to production
-2. Pushing to `develop` branch triggers deployment to staging (if configured)
-3. No GitHub Actions required - Cloudflare handles the build and deployment
+1.  Pushing to `main` branch triggers automatic deployment to production
+2.  Pushing to `develop` branch triggers deployment to staging (if configured)
+3.  No GitHub Actions required - Cloudflare handles the build and deployment
 
 **Setup:**
 - Configure in Cloudflare Dashboard → Workers & Pages → Your Project → Settings → Builds & Deployments
@@ -92,13 +92,13 @@ This project uses **Cloudflare's Git integration** for automatic deployments:
 
 Deploy manually using Wrangler:
 ```bash
-npm run build
-npx wrangler deploy
+bun run build
+bunx wrangler deploy
 ```
 
 **Note:** Requires Cloudflare API token configured:
 ```bash
-wrangler login
+bunx wrangler login
 ```
 
 ## Configuration
@@ -114,7 +114,7 @@ API_URL = "https://api.example.com"
 
 For secrets:
 ```bash
-npx wrangler secret put SECRET_NAME
+bunx wrangler secret put SECRET_NAME
 ```
 
 ### Domain Configuration
@@ -129,9 +129,9 @@ Production domains are configured in `wrangler.toml`:
 
 This project was migrated from Cloudflare Pages to Cloudflare Workers to gain:
 
-1. **Better control**: Custom request/response handling in the worker
-2. **MIME type fixes**: Resolved issues with Content-Type headers for static assets
-3. **Flexibility**: Can add API routes, authentication, or other logic in the worker
+1.  **Better control**: Custom request/response handling in the worker
+2.  **MIME type fixes**: Resolved issues with Content-Type headers for static assets
+3.  **Flexibility**: Can add API routes, authentication, or other logic in the worker
 
 ### What Changed:
 
@@ -142,7 +142,7 @@ This project was migrated from Cloudflare Pages to Cloudflare Workers to gain:
 
 ### For Developers:
 
-- Use `npx wrangler dev` instead of `npm run dev` to test the production-like environment
+- Use `bunx wrangler dev` instead of `bun run dev` to test the production-like environment
 - The worker serves assets from the `dist/` directory after build
 - Deploy is automatic via Cloudflare Git integration
 
@@ -151,23 +151,23 @@ This project was migrated from Cloudflare Pages to Cloudflare Workers to gain:
 ### MIME Type Issues
 
 If assets aren't loading correctly, check:
-1. File extensions are recognized in `worker.ts` MIME_TYPES map
-2. The worker is properly serving from the ASSETS binding
-3. Content-Type headers in browser DevTools Network tab
+1.  File extensions are recognized in `worker.ts` MIME_TYPES map
+2.  The worker is properly serving from the ASSETS binding
+3.  Content-Type headers in browser DevTools Network tab
 
 ### Local Development Issues
 
 If `wrangler dev` fails:
 ```bash
 # Ensure you have the latest wrangler
-npm install wrangler@latest --save-dev
+bun add -d wrangler@latest
 
 # Clear wrangler cache
 rm -rf ~/.wrangler
 
 # Rebuild the app
-npm run build
-npx wrangler dev
+bun run build
+bunx wrangler dev
 ```
 
 ### Deployment Issues
@@ -175,10 +175,10 @@ npx wrangler dev
 If deployment fails:
 ```bash
 # Check wrangler authentication
-npx wrangler whoami
+bunx wrangler whoami
 
 # Re-authenticate if needed
-npx wrangler login
+bunx wrangler login
 ```
 
 ## License

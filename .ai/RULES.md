@@ -14,5 +14,4 @@
 
 ## Tooling
 - **JavaScript/TypeScript**: Generally prefer **Bun**.
-  - *Exception*: `apps/web` currently uses **npm**. Continue using `npm` for that package.
 - **Python**: Always use **uv** for dependency management and virtual environments.
