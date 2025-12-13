@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { HelmetProvider } from 'react-helmet-async'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -7,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { toast } from 'sonner'
+import SEOHead from '@/components/SEOHead'
 import { 
   Lightning, 
   Code, 
@@ -97,11 +99,19 @@ function App() {
   ]
 
   return (
-    <div className="min-h-screen bg-background">
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-card/80 backdrop-blur-lg shadow-lg' : 'bg-transparent'
-      }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <HelmetProvider>
+      <SEOHead 
+        title="Enterprise AI RAG Search & Deep Dive Analysis"
+        description="LornuAI is an AI-powered Retrieval-Augmented Generation platform for enterprise knowledge retrieval, content generation, and data analysis using Cloudflare AI and Google Vertex AI."
+        canonical="/"
+        ogTitle="LornuAI - Enterprise AI RAG Search"
+        ogDescription="Transform your business with cutting-edge AI and automation solutions that deliver results fast."
+      />
+      <div className="min-h-screen bg-background">
+        <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled ? 'bg-card/80 backdrop-blur-lg shadow-lg' : 'bg-transparent'
+        }`}>
+          <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
@@ -134,19 +144,20 @@ function App() {
               Get Started
             </Button>
           </div>
-        </div>
-      </nav>
+          </nav>
+        </header>
 
-      <section id="home" className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 via-background to-accent/5" />
-        
-        <motion.div 
-          style={{ opacity, scale }}
-          className="relative z-10 text-center max-w-5xl mx-auto"
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+        <main>
+          <section id="home" className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 via-background to-accent/5" />
+            
+            <motion.div 
+              style={{ opacity, scale }}
+              className="relative z-10 text-center max-w-5xl mx-auto"
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
@@ -189,24 +200,24 @@ function App() {
             </Button>
           </motion.div>
         </motion.div>
-      </section>
+          </section>
 
-      <section id="services" className="py-20 lg:py-32 px-4">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl lg:text-5xl font-bold mb-4">Our Services</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Comprehensive solutions designed to accelerate your digital transformation
-            </p>
-          </motion.div>
+          <section id="services" className="py-20 lg:py-32 px-4">
+            <div className="max-w-7xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="text-center mb-16"
+              >
+                <h2 className="text-4xl lg:text-5xl font-bold mb-4">Our Services</h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  Comprehensive solutions designed to accelerate your digital transformation
+                </p>
+              </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
               <motion.div
                 key={service.title}
@@ -226,27 +237,27 @@ function App() {
                 </Card>
               </motion.div>
             ))}
+            </div>
           </div>
-        </div>
-      </section>
+            </section>
 
-      <section id="about" className="py-20 lg:py-32 px-4 bg-muted/30">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-                Building the Future, <span className="gradient-text">Together</span>
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                At LornuAI, we believe technology should empower, not complicate. Our team of 
-                experts combines deep technical knowledge with business acumen to deliver solutions 
-                that drive real results.
-              </p>
+          <section id="about" className="py-20 lg:py-32 px-4 bg-muted/30">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <h2 className="text-4xl lg:text-5xl font-bold mb-6">
+                    Building the Future, <span className="gradient-text">Together</span>
+                  </h2>
+                  <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                    At LornuAI, we believe technology should empower, not complicate. Our team of 
+                    experts combines deep technical knowledge with business acumen to deliver solutions 
+                    that drive real results.
+                  </p>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                 We're not just developers—we're partners in your success, committed to understanding 
                 your challenges and creating innovative solutions that scale with your growth.
@@ -289,19 +300,19 @@ function App() {
               </Card>
             </motion.div>
           </div>
-        </div>
-      </section>
+            </div>
+          </section>
 
-      <section id="contact" className="py-20 lg:py-32 px-4">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl lg:text-5xl font-bold mb-4">Let's Talk</h2>
+          <section id="contact" className="py-20 lg:py-32 px-4">
+            <div className="max-w-4xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="text-center mb-12"
+              >
+                <h2 className="text-4xl lg:text-5xl font-bold mb-4">Let's Talk</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Ready to transform your business? Get in touch and let's discuss how we can help you achieve your goals.
             </p>
@@ -362,8 +373,9 @@ function App() {
           </motion.div>
         </div>
       </section>
+    </main>
 
-      <footer className="bg-primary text-primary-foreground py-12 px-4">
+    <footer className="bg-primary text-primary-foreground py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-2xl font-bold gradient-text">LornuAI</div>
@@ -378,7 +390,8 @@ function App() {
           </div>
         </div>
       </footer>
-    </div>
+      </div>
+    </HelmetProvider>
   )
 }
 
