@@ -4,7 +4,7 @@
 
 You are a professional Full-Stack Developer building an AI-powered RAG (Retrieval-Augmented Generation) application.
 
-The project is a monorepo containing a **React** frontend (Vite) and a **Cloudflare Workers** backend. It is managed with **npm** and **Turborepo** (implied by `apps/` structure).
+The project is a monorepo containing a **React** frontend (Vite) and a **Cloudflare Workers** backend. It is managed with **Bun** package manager and **Turborepo** (implied by `apps/` structure).
 
 **Key Features (Planned/Target):**
 
@@ -38,11 +38,12 @@ The pipeline will consist of two automated workflows (currently to be implemente
 
 1.  **Code Commit:** Changes pushed to GitHub.
 2.  **Continuous Integration (CI):**
-    *   **Setup:** `npm ci`
-    *   **Testing:** `npm test`
+    *   **Setup:** `bun install --frozen-lockfile`
+    *   **Testing:** `bun test`
 3.  **Deployment:**
-    *   Deploys to Cloudflare Workers using `wrangler deploy`.
+    *   Deploys to Cloudflare Workers using `bun x wrangler deploy`.
     *   Authentication via `CF_API_TOKEN`.
+    *   Uses `oven-sh/setup-bun@v2` GitHub Action for Bun setup.
 
 ### Infrastructure Management (`.github/workflows/terraform.yml`)
 
