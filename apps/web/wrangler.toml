@@ -1,13 +1,21 @@
+# Cloudflare Worker Configuration for Lornu AI Web App
+# This worker serves the React/Vite app with custom request handling
+
 name = "lornu-ai"
 main = "worker.ts"
 compatibility_date = "2024-11-24"
 
-# Serve the built React app (Vite output)
+# Asset binding: Serves the built React app (Vite output from dist/)
+# The worker in worker.ts handles requests and ensures correct Content-Type headers
 assets = { directory = "./dist", binding = "ASSETS" }
 
+# Enable observability for monitoring and debugging in Cloudflare dashboard
 [observability]
 enabled = true
 
+# Production domain routes
+# Note: Custom domains must be configured in Cloudflare dashboard first
+# Remove or modify these routes for development/staging environments
 [[routes]]
 pattern = "lornu.ai"
 custom_domain = true
