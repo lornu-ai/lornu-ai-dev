@@ -8,9 +8,6 @@ updates:
     directory: "/apps/web"
     schedule:
       interval: "daily"
-    # Bun uses package.json, so npm updates are compatible
-    # After merging, run: bun install to update bun.lock
-
   - package-ecosystem: "devcontainers"
     directory: "/"
     schedule:
