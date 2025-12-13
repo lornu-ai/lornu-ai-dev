@@ -6,7 +6,7 @@
 exact = false
 
 [install]
-# Use production dependencies
+# Install both production and development dependencies
 production = false
 
 # Parallel installation threads
