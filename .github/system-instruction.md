@@ -30,22 +30,23 @@ The project is a monorepo containing a **React** frontend (Vite) and a **Cloudfl
 
 ---
 
-## The CI/CD Workflow (Planned)
+## The CI/CD Workflow
 
-The pipeline will consist of two automated workflows (currently to be implemented):
+### Application Deployment (Cloudflare Git Integration)
 
-### Application Deployment (`.github/workflows/deploy.yml`)
+Deployment is automated via **Cloudflare Git Integration** (no GitHub Actions required):
 
-1.  **Code Commit:** Changes pushed to GitHub.
-2.  **Continuous Integration (CI):**
-    *   **Setup:** `bun install`
-    *   **Testing:** `bun test`
-3.  **Deployment:**
-    *   Deploys to Cloudflare Workers using `bun x wrangler deploy`.
-    *   Authentication via `CF_API_TOKEN`.
-    *   Uses `oven-sh/setup-bun@v2` GitHub Action for Bun setup.
+1.  **Code Commit:** Changes pushed to GitHub (`main` or `develop` branch).
+2.  **Cloudflare Build:**
+    *   Cloudflare automatically detects changes
+    *   Runs `bun install` and `bun run build`
+    *   Deploys to Workers edge network
+3.  **Configuration:**
+    *   Set in Cloudflare Dashboard → Workers & Pages → Settings → Builds & Deployments
+    *   Build command: `bun run build`
+    *   Output directory: `dist/`
 
-### Infrastructure Management (`.github/workflows/terraform.yml`)
+### Infrastructure Management (`.github/workflows/terraform.yml`) (Planned)
 
 1.  **Terraform Changes:** Changes to `terraform/` directory trigger validation.
 2.  **Validation & Planning:** `terraform fmt`, `tflint`, `terraform plan`.
