@@ -7,10 +7,6 @@ export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
 		const response = await env.ASSETS.fetch(request);
 
-		if (!response.ok) {
-			return response;
-		}
-
 		// Ensure content-type is set correctly
 		const contentType = response.headers.get("Content-Type");
 		if (!contentType) {
