@@ -12,7 +12,9 @@ Fixes # (issue)
 ## Labels
 
 Please add the appropriate label(s):
-- [ ] `cursor-ide` - If this PR is related to Cursor IDE features, extensions, or integrations
+- [ ] `cursor-ide` - If this PR is related to Cursor IDE use, features, extensions, or integrations
+- [ ] `antigravity` - If this PR is related to Antigravity use, features, extensions, or integrations
+- [ ] `lornu-ai` - If this PR is related to Lornu AI use, features, extensions, or integrations
 - [ ] Other labels as needed
 
 ## Type of change
