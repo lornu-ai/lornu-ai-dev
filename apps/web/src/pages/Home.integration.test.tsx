@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import Home from './Home'
-import * as sonner from 'sonner'
+
 
 // Mock toast notifications
 const mockToastSuccess = vi.fn()

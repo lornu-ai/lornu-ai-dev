@@ -24,7 +24,12 @@ Object.defineProperty(window, 'matchMedia', {
 
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
-  constructor(_callback?: IntersectionObserverCallback, _options?: IntersectionObserverInit) {}
+  constructor(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _callback?: IntersectionObserverCallback,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _options?: IntersectionObserverInit
+  ) {}
   disconnect() {}
   observe() {}
   takeRecords() {
@@ -35,7 +40,10 @@ global.IntersectionObserver = class IntersectionObserver {
 
 // Mock ResizeObserver
 global.ResizeObserver = class ResizeObserver {
-  constructor(_callback?: ResizeObserverCallback) {}
+  constructor(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _callback?: ResizeObserverCallback
+  ) {}
   disconnect() {}
   observe() {}
   unobserve() {}
