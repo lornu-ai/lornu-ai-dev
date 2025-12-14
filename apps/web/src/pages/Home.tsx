@@ -110,7 +110,7 @@ export default function Home() {
               animate={{ opacity: 1, x: 0 }}
               className="text-2xl font-bold gradient-text"
             >
-              <Logo variant="svg" width={60} height={60} />
+              <Logo width={60} height={60} />
             </motion.div>
 
             <div className="hidden md:flex space-x-10">

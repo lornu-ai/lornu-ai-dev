@@ -17,8 +17,7 @@
  */
 
 import { motion } from 'framer-motion'
-// Logo files - supports both PNG (legacy) and SVG variants
-import logoPng from '@/assets/logo.png'
+// Logo SVG file
 import logoSvg from '@/assets/logo.svg'
 
 interface LogoProps {
@@ -27,7 +26,6 @@ interface LogoProps {
   size?: 'sm' | 'md' | 'lg'
   width?: number
   height?: number
-  variant?: 'default' | 'svg'
 }
 
 const sizeClasses = {
@@ -36,20 +34,14 @@ const sizeClasses = {
   lg: 'h-12'
 }
 
-const logoVariants = {
-  default: logoPng,
-  svg: logoSvg
-}
-
 export function Logo({
   className = '',
   onClick,
   size = 'md',
   width,
-  height,
-  variant = 'default'
+  height
 }: LogoProps) {
-  const logoSource = logoVariants[variant]
+  const logoSource = logoSvg
 
   // Use explicit width/height if provided, otherwise use size classes
   const style = width || height
