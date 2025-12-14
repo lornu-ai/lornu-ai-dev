@@ -1,6 +1,11 @@
 
 export interface Env {
 	ASSETS: Fetcher;
+	RESEND_API_KEY: string;
+	// Optional: Override default contact email (defaults to contact@lornu.ai)
+	CONTACT_EMAIL?: string;
+	// Optional: KV namespace for rate limiting
+	RATE_LIMIT_KV?: KVNamespace;
 }
 
 /**
@@ -16,7 +21,7 @@ const MIME_TYPES: Record<string, string> = {
 	'.json': 'application/json;charset=UTF-8',
 	'.xml': 'application/xml;charset=UTF-8',
 	'.txt': 'text/plain;charset=UTF-8',
-	
+
 	// Images
 	'.svg': 'image/svg+xml',
 	'.png': 'image/png',
@@ -26,21 +31,21 @@ const MIME_TYPES: Record<string, string> = {
 	'.webp': 'image/webp',
 	'.ico': 'image/x-icon',
 	'.bmp': 'image/bmp',
-	
+
 	// Fonts
 	'.woff': 'font/woff',
 	'.woff2': 'font/woff2',
 	'.ttf': 'font/ttf',
 	'.otf': 'font/otf',
 	'.eot': 'application/vnd.ms-fontobject',
-	
+
 	// Media
 	'.mp4': 'video/mp4',
 	'.webm': 'video/webm',
 	'.mp3': 'audio/mpeg',
 	'.wav': 'audio/wav',
 	'.ogg': 'audio/ogg',
-	
+
 	// Documents
 	'.pdf': 'application/pdf',
 	'.zip': 'application/zip',
@@ -59,14 +64,276 @@ function getMimeType(path: string): string | null {
 	return MIME_TYPES[ext] || null;
 }
 
+/**
+ * Rate limiting configuration
+ */
+const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour in milliseconds
+const RATE_LIMIT_MAX_REQUESTS = 5; // Max 5 requests per hour per IP
+
+/**
+ * Validates email format
+ */
+function isValidEmail(email: string): boolean {
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	return emailRegex.test(email);
+}
+
+/**
+ * Sanitizes string input to prevent XSS attacks
+ */
+function sanitizeString(input: string, maxLength: number = 5000): string {
+	return input
+		.trim()
+		.slice(0, maxLength)
+		.replace(/[<>]/g, '');
+}
+
+/**
+ * Validates and sanitizes contact form data
+ */
+function validateContactForm(data: unknown): { valid: boolean; data?: { name: string; email: string; message: string }; error?: string } {
+	if (!data || typeof data !== 'object') {
+		return { valid: false, error: 'Invalid request body' };
+	}
+
+	const { name, email, message } = data as Record<string, unknown>;
+
+	if (!name || typeof name !== 'string' || name.trim().length < 2) {
+		return { valid: false, error: 'Name must be at least 2 characters' };
+	}
+
+	if (!email || typeof email !== 'string' || !isValidEmail(email)) {
+		return { valid: false, error: 'Invalid email address' };
+	}
+
+	if (!message || typeof message !== 'string' || message.trim().length < 10) {
+		return { valid: false, error: 'Message must be at least 10 characters' };
+	}
+
+	return {
+		valid: true,
+		data: {
+			name: sanitizeString(name, 200),
+			email: email.trim().toLowerCase(),
+			message: sanitizeString(message, 5000),
+		},
+	};
+}
+
+/**
+ * Checks rate limit for an IP address
+ */
+async function checkRateLimit(ip: string, kv: KVNamespace | undefined): Promise<{ allowed: boolean; remaining: number }> {
+	if (!kv) {
+		// If KV is not configured, allow all requests (rate limiting disabled)
+		return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS };
+	}
+
+	const key = `rate_limit:${ip}`;
+	const now = Date.now();
+
+	try {
+		const stored = await kv.get(key);
+		if (!stored) {
+			// First request from this IP
+			await kv.put(key, JSON.stringify({ count: 1, resetAt: now + RATE_LIMIT_WINDOW }), {
+				expirationTtl: Math.floor(RATE_LIMIT_WINDOW / 1000),
+			});
+			return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - 1 };
+		}
+
+		const { count, resetAt } = JSON.parse(stored);
+		if (now > resetAt) {
+			// Window expired, reset
+			await kv.put(key, JSON.stringify({ count: 1, resetAt: now + RATE_LIMIT_WINDOW }), {
+				expirationTtl: Math.floor(RATE_LIMIT_WINDOW / 1000),
+			});
+			return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - 1 };
+		}
+
+		if (count >= RATE_LIMIT_MAX_REQUESTS) {
+			return { allowed: false, remaining: 0 };
+		}
+
+		// Increment count
+		await kv.put(key, JSON.stringify({ count: count + 1, resetAt }), {
+			expirationTtl: Math.floor((resetAt - now) / 1000),
+		});
+		return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - count - 1 };
+	} catch (error) {
+		console.error('Rate limit check failed:', error);
+		// On error, allow the request (fail open)
+		return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS };
+	}
+}
+
+/**
+ * Gets client IP address from request
+ */
+function getClientIP(request: Request): string {
+	// Try CF-Connecting-IP header first (Cloudflare)
+	const cfIP = request.headers.get('CF-Connecting-IP');
+	if (cfIP) return cfIP;
+
+	// Fallback to X-Forwarded-For
+	const xForwardedFor = request.headers.get('X-Forwarded-For');
+	if (xForwardedFor) {
+		return xForwardedFor.split(',')[0].trim();
+	}
+
+	// Fallback to a default value (shouldn't happen with Cloudflare)
+	return 'unknown';
+}
+
+/**
+ * Sends email using Resend API
+ */
+async function sendEmail(
+	data: { name: string; email: string; message: string },
+	env: Env
+): Promise<{ success: boolean; error?: string }> {
+	const toEmail = env.CONTACT_EMAIL || 'contact@lornu.ai';
+
+	try {
+		const response = await fetch('https://api.resend.com/emails', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+			},
+			body: JSON.stringify({
+				from: 'LornuAI Contact Form <noreply@lornu.ai>',
+				to: [toEmail],
+				replyTo: data.email,
+				subject: `New Contact Form Submission from ${data.name}`,
+				html: `
+					<h2>New Contact Form Submission</h2>
+					<p><strong>Name:</strong> ${data.name}</p>
+					<p><strong>Email:</strong> ${data.email}</p>
+					<p><strong>Message:</strong></p>
+					<p>${data.message.replace(/\n/g, '<br>')}</p>
+				`,
+				text: `
+New Contact Form Submission
+
+Name: ${data.name}
+Email: ${data.email}
+
+Message:
+${data.message}
+				`.trim(),
+			}),
+		});
+
+		if (!response.ok) {
+			const errorData = await response.json().catch(() => ({}));
+			console.error('Resend API error:', response.status, errorData);
+			return {
+				success: false,
+				error: 'Failed to send email. Please try again later.',
+			};
+		}
+
+		return { success: true };
+	} catch (error) {
+		console.error('Email sending error:', error);
+		return {
+			success: false,
+			error: 'Failed to send email. Please try again later.',
+		};
+	}
+}
+
+/**
+ * Handles POST /api/contact requests
+ */
+async function handleContactAPI(request: Request, env: Env): Promise<Response> {
+	// Only allow POST requests
+	if (request.method !== 'POST') {
+		return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+			status: 405,
+			headers: { 'Content-Type': 'application/json' },
+		});
+	}
+
+	// Check rate limit
+	const clientIP = getClientIP(request);
+	const rateLimit = await checkRateLimit(clientIP, env.RATE_LIMIT_KV);
+
+	if (!rateLimit.allowed) {
+		return new Response(
+			JSON.stringify({
+				error: 'Too many requests. Please try again later.',
+			}),
+			{
+				status: 429,
+				headers: {
+					'Content-Type': 'application/json',
+					'Retry-After': '3600', // 1 hour
+				},
+			}
+		);
+	}
+
+	// Parse and validate request body
+	let body: unknown;
+	try {
+		body = await request.json();
+	} catch (error) {
+		return new Response(JSON.stringify({ error: 'Invalid JSON in request body' }), {
+			status: 400,
+			headers: { 'Content-Type': 'application/json' },
+		});
+	}
+
+	const validation = validateContactForm(body);
+	if (!validation.valid || !validation.data) {
+		return new Response(JSON.stringify({ error: validation.error || 'Validation failed' }), {
+			status: 400,
+			headers: { 'Content-Type': 'application/json' },
+		});
+	}
+
+	// Send email
+	const emailResult = await sendEmail(validation.data, env);
+	if (!emailResult.success) {
+		return new Response(JSON.stringify({ error: emailResult.error || 'Failed to send email' }), {
+			status: 500,
+			headers: { 'Content-Type': 'application/json' },
+		});
+	}
+
+	// Success response
+	return new Response(
+		JSON.stringify({
+			success: true,
+			message: 'Message sent successfully',
+		}),
+		{
+			status: 200,
+			headers: {
+				'Content-Type': 'application/json',
+				'X-RateLimit-Remaining': rateLimit.remaining.toString(),
+			},
+		}
+	);
+}
+
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+		const url = new URL(request.url);
+
+		// Handle API routes
+		if (url.pathname === '/api/contact') {
+			return handleContactAPI(request, env);
+		}
+
+		// Serve static assets
 		const response = await env.ASSETS.fetch(request);
 
 		// Check if Content-Type header is missing
 		const contentType = response.headers.get("Content-Type");
 		if (!contentType) {
-			const url = new URL(request.url);
 			const mimeType = getMimeType(url.pathname);
 
 			// If we found a matching MIME type, set it

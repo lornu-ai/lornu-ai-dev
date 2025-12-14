@@ -5,10 +5,17 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { ArrowLeft, ShieldCheck, Lock, Key, Eye, CloudArrowUp } from '@phosphor-icons/react'
 import { Logo } from '@/components/Logo'
+import SEOHead from '@/components/SEOHead'
 
 export default function Security() {
   return (
-    <div className="min-h-screen bg-background">
+    <>
+      <SEOHead
+        title="Security - LornuAI"
+        description="Security information for LornuAI platform. Learn about our security practices and how we protect your enterprise data."
+        canonical="/security"
+      />
+      <div className="min-h-screen bg-background">
       <nav className="bg-card/80 backdrop-blur-lg shadow-lg sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -383,7 +390,7 @@ export default function Security() {
                     <strong>LornuAI Inc.</strong><br />
                     Security Team: security@lornu.ai<br />
                     Privacy Contact: privacy@lornu.ai<br />
-                    General Inquiries: <Link to="/" className="text-accent hover:underline">lornu.ai/contact</Link>
+                    General Inquiries: <Link to="/contact" className="text-accent hover:underline">lornu.ai/contact</Link>
                   </p>
                 </div>
               </section>
@@ -411,5 +418,6 @@ export default function Security() {
         </motion.div>
       </div>
     </div>
+    </>
   )
 }
