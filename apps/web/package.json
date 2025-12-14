@@ -10,6 +10,12 @@
         "lint": "eslint .",
         "optimize": "vite optimize",
         "preview": "vite preview",
+        "test": "vitest",
+        "test:ui": "vitest --ui",
+        "test:run": "vitest run",
+        "test:coverage": "vitest run --coverage",
+        "test:integration": "vitest run src/**/*.integration.test.tsx",
+        "test:ci": "vitest run --coverage"
         "test:contact": "bun run scripts/test-contact-form.ts"
     },
     "dependencies": {
