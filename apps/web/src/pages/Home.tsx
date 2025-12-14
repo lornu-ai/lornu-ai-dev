@@ -8,12 +8,13 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { toast } from 'sonner'
 import { Link } from 'react-router-dom'
-import { 
-  Lightning, 
-  Code, 
-  Rocket, 
-  ChartLine, 
-  Users, 
+import { Logo } from '@/components/Logo'
+import {
+  Lightning,
+  Code,
+  Rocket,
+  ChartLine,
+  Users,
   Envelope,
   ArrowRight,
   Check
@@ -29,7 +30,7 @@ export default function Home() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
-      
+
       const sections = ['home', 'services', 'about', 'contact']
       const current = sections.find(section => {
         const element = document.getElementById(section)
@@ -39,7 +40,7 @@ export default function Home() {
         }
         return false
       })
-      
+
       if (current) setActiveSection(current)
     }
 
@@ -104,22 +105,22 @@ export default function Home() {
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               className="text-2xl font-bold gradient-text"
             >
-              LornuAI
+              <Logo width={120} height={40} />
             </motion.div>
-            
+
             <div className="hidden md:flex space-x-8">
               {['home', 'services', 'about', 'contact'].map((section) => (
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
                   className={`text-sm font-semibold transition-colors capitalize ${
-                    activeSection === section 
-                      ? 'text-foreground' 
+                    activeSection === section
+                      ? 'text-foreground'
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -127,7 +128,7 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            
+
             <Button
               onClick={() => scrollToSection('contact')}
               className="hidden md:inline-flex gradient-bg hover:opacity-90"
@@ -140,8 +141,8 @@ export default function Home() {
 
       <section id="home" className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 via-background to-accent/5" />
-        
-        <motion.div 
+
+        <motion.div
           style={{ opacity, scale }}
           className="relative z-10 text-center max-w-5xl mx-auto"
         >
@@ -156,20 +157,20 @@ export default function Home() {
               <span className="text-foreground">with AI</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              We transform ambitious ideas into powerful digital solutions. 
+              We transform ambitious ideas into powerful digital solutions.
               Harness the power of artificial intelligence to accelerate your business growth.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 onClick={() => scrollToSection('contact')}
                 className="gradient-bg hover:opacity-90 text-lg px-8"
               >
                 Get Started
                 <ArrowRight className="ml-2" weight="bold" />
               </Button>
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 variant="outline"
                 onClick={() => scrollToSection('about')}
                 className="text-lg px-8"
@@ -231,8 +232,8 @@ export default function Home() {
                 Why Choose <span className="gradient-text">LornuAI</span>
               </h2>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                We combine deep technical expertise with a passion for innovation to deliver solutions 
-                that don't just meet expectations—they exceed them. Our team of experienced engineers 
+                We combine deep technical expertise with a passion for innovation to deliver solutions
+                that don't just meet expectations—they exceed them. Our team of experienced engineers
                 and data scientists are dedicated to transforming your vision into reality.
               </p>
               <div className="grid grid-cols-2 gap-4">
@@ -365,7 +366,7 @@ export default function Home() {
       <footer className="bg-primary text-primary-foreground py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="text-2xl font-bold gradient-text">LornuAI</div>
+            <div className="text-2xl font-bold gradient-text"><Logo width={120} height={40} /></div>
             <p className="text-sm text-center md:text-left opacity-80">
               © 2025 LornuAI Inc. Building the future with intelligent solutions.
             </p>

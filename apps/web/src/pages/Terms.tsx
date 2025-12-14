@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { ArrowLeft } from '@phosphor-icons/react'
+import { Logo } from '@/components/Logo'
 
 export default function Terms() {
   return (
@@ -12,7 +13,7 @@ export default function Terms() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link to="/" className="text-2xl font-bold gradient-text" aria-label="LornuAI home">
-              LornuAI
+              <Logo width={120} height={40} />
             </Link>
             <Link to="/">
               <Button variant="ghost" className="gap-2">
@@ -38,8 +39,8 @@ export default function Terms() {
               <section>
                 <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  By accessing or using LornuAI's services ("Service"), you agree to be bound by these Terms of Service 
-                  ("Terms"). If you disagree with any part of the terms, you may not access the Service. These Terms apply 
+                  By accessing or using LornuAI's services ("Service"), you agree to be bound by these Terms of Service
+                  ("Terms"). If you disagree with any part of the terms, you may not access the Service. These Terms apply
                   to all visitors, users, and others who access or use the Service.
                 </p>
               </section>
@@ -49,8 +50,8 @@ export default function Terms() {
               <section>
                 <h2 className="text-2xl font-semibold mb-4">2. Description of Service</h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  LornuAI provides an AI-powered Retrieval-Augmented Generation (RAG) platform that enables users to 
-                  interact with artificial intelligence models for information retrieval, content generation, and data analysis. 
+                  LornuAI provides an AI-powered Retrieval-Augmented Generation (RAG) platform that enables users to
+                  interact with artificial intelligence models for information retrieval, content generation, and data analysis.
                   Our Service utilizes multiple AI providers including:
                 </p>
                 <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
@@ -83,11 +84,11 @@ export default function Terms() {
 
               <section>
                 <h2 className="text-2xl font-semibold mb-4">4. Intellectual Property Rights</h2>
-                
+
                 <h3 className="text-xl font-semibold mb-3 mt-4">4.1 Service Content</h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  The Service and its original content (excluding user-generated content and AI outputs), features, and 
-                  functionality are and will remain the exclusive property of LornuAI Inc. and its licensors. The Service 
+                  The Service and its original content (excluding user-generated content and AI outputs), features, and
+                  functionality are and will remain the exclusive property of LornuAI Inc. and its licensors. The Service
                   is protected by copyright, trademark, and other laws of both the United States and foreign countries.
                 </p>
 
@@ -105,8 +106,8 @@ export default function Terms() {
 
                 <h3 className="text-xl font-semibold mb-3 mt-4">4.3 User Responsibilities</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  You are solely responsible for ensuring that your use of AI Outputs complies with applicable laws, 
-                  including but not limited to copyright, trademark, and data protection regulations. LornuAI is not 
+                  You are solely responsible for ensuring that your use of AI Outputs complies with applicable laws,
+                  including but not limited to copyright, trademark, and data protection regulations. LornuAI is not
                   responsible for any claims arising from your use of AI Outputs.
                 </p>
               </section>
@@ -116,13 +117,13 @@ export default function Terms() {
               <section>
                 <h2 className="text-2xl font-semibold mb-4">5. Service Availability and Modifications</h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  We reserve the right to withdraw or amend our Service, and any service or material we provide via the Service, 
-                  in our sole discretion without notice. We will not be liable if for any reason all or any part of the Service 
+                  We reserve the right to withdraw or amend our Service, and any service or material we provide via the Service,
+                  in our sole discretion without notice. We will not be liable if for any reason all or any part of the Service
                   is unavailable at any time or for any period.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  From time to time, we may restrict access to some parts of the Service, or the entire Service, to users, 
-                  including registered users. The Service is provided through third-party infrastructure (Cloudflare Workers, 
+                  From time to time, we may restrict access to some parts of the Service, or the entire Service, to users,
+                  including registered users. The Service is provided through third-party infrastructure (Cloudflare Workers,
                   Google Vertex AI) and may be subject to downtime or performance issues beyond our control.
                 </p>
               </section>
@@ -132,9 +133,9 @@ export default function Terms() {
               <section>
                 <h2 className="text-2xl font-semibold mb-4">6. Limitation of Liability</h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL LORNUAI INC., ITS AFFILIATES, 
-                  DIRECTORS, EMPLOYEES, OR AGENTS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR 
-                  PUNITIVE DAMAGES, INCLUDING WITHOUT LIMITATION, LOSS OF PROFITS, DATA, USE, GOODWILL, OR OTHER INTANGIBLE 
+                  TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL LORNUAI INC., ITS AFFILIATES,
+                  DIRECTORS, EMPLOYEES, OR AGENTS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR
+                  PUNITIVE DAMAGES, INCLUDING WITHOUT LIMITATION, LOSS OF PROFITS, DATA, USE, GOODWILL, OR OTHER INTANGIBLE
                   LOSSES, RESULTING FROM:
                 </p>
                 <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
@@ -145,7 +146,7 @@ export default function Terms() {
                   <li>Any bugs, viruses, or harmful code transmitted through the Service</li>
                 </ul>
                 <p className="text-muted-foreground leading-relaxed mt-4">
-                  WHETHER BASED ON WARRANTY, CONTRACT, TORT (INCLUDING NEGLIGENCE), OR ANY OTHER LEGAL THEORY, WHETHER OR 
+                  WHETHER BASED ON WARRANTY, CONTRACT, TORT (INCLUDING NEGLIGENCE), OR ANY OTHER LEGAL THEORY, WHETHER OR
                   NOT WE HAVE BEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGE.
                 </p>
               </section>
@@ -155,12 +156,12 @@ export default function Terms() {
               <section>
                 <h2 className="text-2xl font-semibold mb-4">7. Disclaimer of Warranties</h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. LORNUAI INC. EXPRESSLY DISCLAIMS ALL 
-                  WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+                  THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. LORNUAI INC. EXPRESSLY DISCLAIMS ALL
+                  WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
                   OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  We make no warranty that the Service will meet your requirements, be available on an uninterrupted, timely, 
+                  We make no warranty that the Service will meet your requirements, be available on an uninterrupted, timely,
                   secure, or error-free basis, or that AI-generated content will be accurate, reliable, complete, or current.
                 </p>
               </section>
@@ -170,10 +171,10 @@ export default function Terms() {
               <section>
                 <h2 className="text-2xl font-semibold mb-4">8. Indemnification</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  You agree to defend, indemnify, and hold harmless LornuAI Inc., its affiliates, licensors, and service providers, 
-                  and its and their respective officers, directors, employees, contractors, agents, licensors, suppliers, successors, 
-                  and assigns from and against any claims, liabilities, damages, judgments, awards, losses, costs, expenses, or fees 
-                  (including reasonable attorneys' fees) arising out of or relating to your violation of these Terms or your use of 
+                  You agree to defend, indemnify, and hold harmless LornuAI Inc., its affiliates, licensors, and service providers,
+                  and its and their respective officers, directors, employees, contractors, agents, licensors, suppliers, successors,
+                  and assigns from and against any claims, liabilities, damages, judgments, awards, losses, costs, expenses, or fees
+                  (including reasonable attorneys' fees) arising out of or relating to your violation of these Terms or your use of
                   the Service, including, but not limited to, your use of AI-generated content.
                 </p>
               </section>
@@ -183,12 +184,12 @@ export default function Terms() {
               <section>
                 <h2 className="text-2xl font-semibold mb-4">9. Termination</h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  We may terminate or suspend your access to the Service immediately, without prior notice or liability, for any 
-                  reason whatsoever, including without limitation if you breach the Terms. Upon termination, your right to use 
+                  We may terminate or suspend your access to the Service immediately, without prior notice or liability, for any
+                  reason whatsoever, including without limitation if you breach the Terms. Upon termination, your right to use
                   the Service will immediately cease.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  All provisions of the Terms which by their nature should survive termination shall survive termination, including, 
+                  All provisions of the Terms which by their nature should survive termination shall survive termination, including,
                   without limitation, ownership provisions, warranty disclaimers, indemnity, and limitations of liability.
                 </p>
               </section>
@@ -198,8 +199,8 @@ export default function Terms() {
               <section>
                 <h2 className="text-2xl font-semibold mb-4">10. Governing Law</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  These Terms shall be governed and construed in accordance with the laws of the State of Delaware, United States, 
-                  without regard to its conflict of law provisions. Our failure to enforce any right or provision of these Terms 
+                  These Terms shall be governed and construed in accordance with the laws of the State of Delaware, United States,
+                  without regard to its conflict of law provisions. Our failure to enforce any right or provision of these Terms
                   will not be considered a waiver of those rights.
                 </p>
               </section>
@@ -209,9 +210,9 @@ export default function Terms() {
               <section>
                 <h2 className="text-2xl font-semibold mb-4">11. Changes to Terms</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is 
-                  material, we will try to provide at least 30 days' notice prior to any new terms taking effect. What constitutes 
-                  a material change will be determined at our sole discretion. By continuing to access or use our Service after 
+                  We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is
+                  material, we will try to provide at least 30 days' notice prior to any new terms taking effect. What constitutes
+                  a material change will be determined at our sole discretion. By continuing to access or use our Service after
                   those revisions become effective, you agree to be bound by the revised terms.
                 </p>
               </section>

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { ArrowLeft } from '@phosphor-icons/react'
+import { Logo } from '@/components/Logo'
 
 export default function Privacy() {
   return (
@@ -12,7 +13,7 @@ export default function Privacy() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link to="/" className="text-2xl font-bold gradient-text" aria-label="LornuAI home">
-              LornuAI
+              <Logo width={120} height={40} />
             </Link>
             <Link to="/">
               <Button variant="ghost" className="gap-2">
@@ -38,12 +39,12 @@ export default function Privacy() {
               <section>
                 <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  LornuAI Inc. ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains 
-                  how we collect, use, disclose, and safeguard your information when you use our AI-powered Retrieval-Augmented 
+                  LornuAI Inc. ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains
+                  how we collect, use, disclose, and safeguard your information when you use our AI-powered Retrieval-Augmented
                   Generation (RAG) service ("Service").
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, 
+                  Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy,
                   please do not access the Service.
                 </p>
               </section>
@@ -52,7 +53,7 @@ export default function Privacy() {
 
               <section>
                 <h2 className="text-2xl font-semibold mb-4">2. Information We Collect</h2>
-                
+
                 <h3 className="text-xl font-semibold mb-3 mt-4">2.1 Information You Provide</h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   When you use the Service, we collect the following information that you directly provide:
@@ -78,8 +79,8 @@ export default function Privacy() {
 
                 <h3 className="text-xl font-semibold mb-3 mt-6">2.3 Cookies and Tracking Technologies</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  We use minimal cookies and tracking technologies for essential Service functionality. These are primarily 
-                  session cookies required for authentication and routing through Cloudflare's infrastructure. We do not use 
+                  We use minimal cookies and tracking technologies for essential Service functionality. These are primarily
+                  session cookies required for authentication and routing through Cloudflare's infrastructure. We do not use
                   third-party advertising cookies or cross-site tracking.
                 </p>
               </section>
@@ -106,7 +107,7 @@ export default function Privacy() {
 
               <section>
                 <h2 className="text-2xl font-semibold mb-4">4. Data Storage and Retention</h2>
-                
+
                 <h3 className="text-xl font-semibold mb-3 mt-4">4.1 Cloudflare KV (Key-Value Storage)</h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   We use Cloudflare KV to cache AI responses for performance optimization:
@@ -131,8 +132,8 @@ export default function Privacy() {
 
                 <h3 className="text-xl font-semibold mb-3 mt-6">4.3 Logs and Analytics</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Request logs (IP address, timestamp, query metadata) are retained in Cloudflare AI Gateway for up to 30 days 
-                  for analytics and security purposes. These logs do not contain full query content, only metadata such as 
+                  Request logs (IP address, timestamp, query metadata) are retained in Cloudflare AI Gateway for up to 30 days
+                  for analytics and security purposes. These logs do not contain full query content, only metadata such as
                   request size, model used, and response time.
                 </p>
               </section>
@@ -141,12 +142,12 @@ export default function Privacy() {
 
               <section>
                 <h2 className="text-2xl font-semibold mb-4">5. Third-Party Data Sharing and Processing</h2>
-                
+
                 <h3 className="text-xl font-semibold mb-3 mt-4">5.1 AI Model Providers</h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   Your queries are processed by third-party AI providers. We explicitly disclose what data is shared:
                 </p>
-                
+
                 <div className="bg-secondary/20 p-4 rounded-lg mb-4">
                   <h4 className="font-semibold mb-2">Cloudflare Workers AI</h4>
                   <ul className="list-disc list-inside text-muted-foreground space-y-1 ml-4 text-sm">
@@ -178,14 +179,14 @@ export default function Privacy() {
                   <li><strong>Cloudflare KV & R2:</strong> Data storage for caching and RAG functionality</li>
                 </ul>
                 <p className="text-muted-foreground leading-relaxed mt-4">
-                  Cloudflare acts as a data processor on our behalf. Their security and privacy practices are detailed in their 
+                  Cloudflare acts as a data processor on our behalf. Their security and privacy practices are detailed in their
                   <a href="https://www.cloudflare.com/trust-hub/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline ml-1">Trust Hub</a>.
                 </p>
 
                 <h3 className="text-xl font-semibold mb-3 mt-6">5.3 No Other Third Parties</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  We do not sell, trade, or otherwise transfer your data to third parties for marketing purposes. We do not use 
-                  third-party analytics services (like Google Analytics) or advertising networks. All analytics are performed 
+                  We do not sell, trade, or otherwise transfer your data to third parties for marketing purposes. We do not use
+                  third-party analytics services (like Google Analytics) or advertising networks. All analytics are performed
                   internally using Cloudflare AI Gateway metrics.
                 </p>
               </section>
@@ -206,7 +207,7 @@ export default function Privacy() {
                   <li><strong>DDoS Protection:</strong> Cloudflare's network provides protection against distributed denial-of-service attacks</li>
                 </ul>
                 <p className="text-muted-foreground leading-relaxed mt-4">
-                  However, no method of transmission over the Internet or electronic storage is 100% secure. While we strive to 
+                  However, no method of transmission over the Internet or electronic storage is 100% secure. While we strive to
                   use commercially acceptable means to protect your data, we cannot guarantee its absolute security.
                 </p>
               </section>
@@ -237,9 +238,9 @@ export default function Privacy() {
               <section>
                 <h2 className="text-2xl font-semibold mb-4">8. Children's Privacy</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  Our Service is not intended for children under the age of 13. We do not knowingly collect personal information 
-                  from children under 13. If you become aware that a child has provided us with personal information, please 
-                  contact us. If we become aware that we have collected personal information from children without verification 
+                  Our Service is not intended for children under the age of 13. We do not knowingly collect personal information
+                  from children under 13. If you become aware that a child has provided us with personal information, please
+                  contact us. If we become aware that we have collected personal information from children without verification
                   of parental consent, we will take steps to remove that information from our servers.
                 </p>
               </section>
@@ -249,10 +250,10 @@ export default function Privacy() {
               <section>
                 <h2 className="text-2xl font-semibold mb-4">9. International Data Transfers</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  Your information may be processed in countries other than your country of residence. These countries may have 
-                  data protection laws that are different from the laws of your country. By using the Service, you consent to 
-                  the transfer of information to the United States and other countries where Cloudflare operates data centers. 
-                  Cloudflare maintains appropriate safeguards for international data transfers as detailed in their 
+                  Your information may be processed in countries other than your country of residence. These countries may have
+                  data protection laws that are different from the laws of your country. By using the Service, you consent to
+                  the transfer of information to the United States and other countries where Cloudflare operates data centers.
+                  Cloudflare maintains appropriate safeguards for international data transfers as detailed in their
                   <a href="https://www.cloudflare.com/trust-hub/gdpr/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline ml-1">GDPR compliance documentation</a>.
                 </p>
               </section>
@@ -262,9 +263,9 @@ export default function Privacy() {
               <section>
                 <h2 className="text-2xl font-semibold mb-4">10. Changes to This Privacy Policy</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  We may update this Privacy Policy from time to time. We will notify you of any material changes by posting 
-                  the new Privacy Policy on this page and updating the "Last Updated" date. You are advised to review this 
-                  Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted 
+                  We may update this Privacy Policy from time to time. We will notify you of any material changes by posting
+                  the new Privacy Policy on this page and updating the "Last Updated" date. You are advised to review this
+                  Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted
                   on this page. Your continued use of the Service after any modifications indicates your acceptance of the updated policy.
                 </p>
               </section>

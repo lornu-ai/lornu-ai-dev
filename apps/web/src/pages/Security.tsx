@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { ArrowLeft, ShieldCheck, Lock, Key, Eye, CloudArrowUp } from '@phosphor-icons/react'
+import { Logo } from '@/components/Logo'
 
 export default function Security() {
   return (
@@ -12,7 +13,7 @@ export default function Security() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link to="/" className="text-2xl font-bold gradient-text" aria-label="LornuAI home">
-              LornuAI
+              <Logo width={120} height={40} />
             </Link>
             <Link to="/">
               <Button variant="ghost" className="gap-2">
@@ -38,12 +39,12 @@ export default function Security() {
               <section>
                 <h2 className="text-2xl font-semibold mb-4">Our Commitment to Security</h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  At LornuAI, security is fundamental to everything we do. We are committed to protecting your data and 
-                  maintaining the highest standards of security across our infrastructure, development practices, and 
+                  At LornuAI, security is fundamental to everything we do. We are committed to protecting your data and
+                  maintaining the highest standards of security across our infrastructure, development practices, and
                   operational procedures.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  This document outlines our security architecture, practices, and policies to provide transparency about 
+                  This document outlines our security architecture, practices, and policies to provide transparency about
                   how we protect your information when you use our AI-powered RAG service.
                 </p>
               </section>
@@ -55,7 +56,7 @@ export default function Security() {
                   <CloudArrowUp size={32} weight="duotone" className="text-accent" />
                   <h2 className="text-2xl font-semibold">1. Infrastructure Security</h2>
                 </div>
-                
+
                 <h3 className="text-xl font-semibold mb-3 mt-4">1.1 Cloudflare Workers Platform</h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   Our Service runs entirely on Cloudflare Workers, a secure serverless execution environment:
@@ -214,7 +215,7 @@ export default function Security() {
 
                 <h3 className="text-xl font-semibold mb-3 mt-6">4.3 Data Deletion</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Users can request deletion of their data at any time by contacting privacy@lornu.ai. We will delete all 
+                  Users can request deletion of their data at any time by contacting privacy@lornu.ai. We will delete all
                   personal data within 30 days of a verified deletion request, except where retention is required by law.
                 </p>
               </section>
@@ -231,7 +232,7 @@ export default function Security() {
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   We carefully vet all third-party services used in our platform:
                 </p>
-                
+
                 <div className="bg-secondary/20 p-4 rounded-lg mb-4">
                   <h4 className="font-semibold mb-2">Cloudflare (Infrastructure Provider)</h4>
                   <ul className="list-disc list-inside text-muted-foreground space-y-1 ml-4 text-sm">
@@ -256,8 +257,8 @@ export default function Security() {
 
                 <h3 className="text-xl font-semibold mb-3 mt-6">5.2 Data Processing Agreements</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  We maintain Data Processing Agreements (DPAs) with all third-party processors to ensure they meet our 
-                  security and privacy standards. These agreements include provisions for data security, breach notification, 
+                  We maintain Data Processing Agreements (DPAs) with all third-party processors to ensure they meet our
+                  security and privacy standards. These agreements include provisions for data security, breach notification,
                   and compliance with applicable data protection regulations.
                 </p>
               </section>
@@ -296,8 +297,8 @@ export default function Security() {
 
                 <h3 className="text-xl font-semibold mb-3 mt-6">6.3 Breach Notification</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  In the unlikely event of a data breach affecting personal information, we will notify affected users and 
-                  relevant authorities as required by applicable law (e.g., GDPR, CCPA). Notifications will include details 
+                  In the unlikely event of a data breach affecting personal information, we will notify affected users and
+                  relevant authorities as required by applicable law (e.g., GDPR, CCPA). Notifications will include details
                   about the nature of the breach, data affected, and steps being taken to address the incident.
                 </p>
               </section>
@@ -322,9 +323,9 @@ export default function Security() {
 
                 <h3 className="text-xl font-semibold mb-3 mt-6">7.2 Security Audits</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  We conduct regular security assessments and audits of our platform, including vulnerability scanning, 
-                  penetration testing, and code security reviews. While LornuAI is an early-stage company, we leverage the 
-                  security certifications and audits of our infrastructure providers (Cloudflare, Google Cloud) to ensure 
+                  We conduct regular security assessments and audits of our platform, including vulnerability scanning,
+                  penetration testing, and code security reviews. While LornuAI is an early-stage company, we leverage the
+                  security certifications and audits of our infrastructure providers (Cloudflare, Google Cloud) to ensure
                   enterprise-grade security.
                 </p>
               </section>
@@ -354,7 +355,7 @@ export default function Security() {
 
                 <h3 className="text-xl font-semibold mb-3 mt-6">8.2 Bug Bounty Program</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  We do not currently have a formal bug bounty program but may offer recognition or compensation for 
+                  We do not currently have a formal bug bounty program but may offer recognition or compensation for
                   significant vulnerability disclosures on a case-by-case basis.
                 </p>
               </section>
@@ -364,8 +365,8 @@ export default function Security() {
               <section>
                 <h2 className="text-2xl font-semibold mb-4">9. Security Updates</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  This Security Standards document is reviewed and updated regularly to reflect changes in our security 
-                  practices, infrastructure, and threat landscape. Material changes will be communicated via our website 
+                  This Security Standards document is reviewed and updated regularly to reflect changes in our security
+                  practices, infrastructure, and threat landscape. Material changes will be communicated via our website
                   and email notifications to registered users.
                 </p>
               </section>
