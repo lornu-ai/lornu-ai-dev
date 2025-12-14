@@ -11,11 +11,18 @@
  *   bun run scripts/test-contact-form.ts [--local|--production] [--resend-only]
  */
 
+type TestDetails =
+  | { emailId: string; status: string }
+  | { rateLimitRemaining: string | null; [key: string]: unknown }
+  | { stderr: string }
+  | { output: string[] }
+  | Record<string, unknown>;
+
 interface TestResult {
   name: string;
   success: boolean;
   error?: string;
-  details?: any;
+  details?: TestDetails;
 }
 
 const results: TestResult[] = [];
@@ -178,7 +185,9 @@ async function main() {
   // Check for Resend API key
   const resendApiKey = process.env.RESEND_API_KEY;
 
-  if (!resendApiKey && !resendOnly) {
+  // Always check for API key if not provided, regardless of resend-only flag
+  // (resend-only still needs the API key to run the test)
+  if (!resendApiKey) {
     console.log('⚠️  RESEND_API_KEY environment variable not set.');
     console.log('   Trying to check Wrangler secrets...\n');
 
