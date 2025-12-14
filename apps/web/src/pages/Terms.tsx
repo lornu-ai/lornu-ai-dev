@@ -11,7 +11,7 @@ export default function Terms() {
   return (
     <>
       <SEOHead
-        title="Terms of Service - LornuAI"
+        title="Terms of Service"
         description="Terms of Service for LornuAI platform. Read our terms and conditions for using our AI-powered enterprise solutions."
         canonical="/terms"
       />
