@@ -1,14 +1,41 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { handleContactAPI } from './worker'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { handleContactAPI } from '../worker'
 
 // Mock Env for testing
 const createMockEnv = () => ({
 	ASSETS: { fetch: vi.fn() },
 	RESEND_API_KEY: 'test-api-key',
 	CONTACT_EMAIL: 'test@example.com',
+	RATE_LIMIT_KV: {
+		get: vi.fn(),
+		put: vi.fn(),
+		delete: vi.fn(),
+	},
 })
 
 describe('Contact Form API', () => {
+	// Mock fetch globally for all tests
+	let mockFetch: ReturnType<typeof vi.fn>
+
+	beforeEach(() => {
+		mockFetch = vi.fn().mockResolvedValue(
+			new Response(JSON.stringify({ id: 'email-123' }), {
+				status: 200,
+				headers: { 'Content-Type': 'application/json' },
+			})
+		)
+		// Replace global fetch with mock
+		globalThis.fetch = mockFetch as any
+	})
+
+	afterEach(() => {
+		vi.restoreAllMocks()
+		// Restore original fetch if it exists
+		if (globalThis.fetch) {
+			delete (globalThis as any).fetch
+		}
+	})
+
 	describe('CORS Support', () => {
 		it('handles OPTIONS preflight requests', async () => {
 			const env = createMockEnv()
@@ -26,16 +53,8 @@ describe('Contact Form API', () => {
 
 		it('includes CORS headers on successful POST', async () => {
 			const env = createMockEnv()
-			vi.mock('fetch', () => ({
-				default: vi.fn(() =>
-					Promise.resolve(
-						new Response(JSON.stringify({ id: 'email-123' }), {
-							status: 200,
-							headers: { 'Content-Type': 'application/json' },
-						})
-					)
-				),
-			}))
+			// Mock KV to allow request (bypass rate limiting)
+			env.RATE_LIMIT_KV.get = vi.fn().mockResolvedValue(null)
 
 			const request = new Request('http://localhost/api/contact', {
 				method: 'POST',
@@ -183,6 +202,9 @@ describe('Contact Form API', () => {
 
 		it('accepts valid email addresses', async () => {
 			const env = createMockEnv()
+			// Mock KV to allow request (bypass rate limiting)
+			env.RATE_LIMIT_KV.get = vi.fn().mockResolvedValue(null)
+
 			const validEmails = [
 				'test@example.com',
 				'user.name@example.com',
@@ -280,8 +302,23 @@ describe('Contact Form API', () => {
 	})
 
 	describe('XSS Prevention', () => {
-		it('HTML-encodes dangerous characters in name', async () => {
+		it('sanitizes dangerous characters in name', async () => {
 			const env = createMockEnv()
+			// Mock KV to allow request (bypass rate limiting)
+			env.RATE_LIMIT_KV.get = vi.fn().mockResolvedValue(null)
+
+			// Track what was sent to fetch
+			let sentBody: string | null = null
+			mockFetch.mockImplementation((url: string, options: RequestInit) => {
+				sentBody = options.body as string
+				return Promise.resolve(
+					new Response(JSON.stringify({ id: 'email-123' }), {
+						status: 200,
+						headers: { 'Content-Type': 'application/json' },
+					})
+				)
+			})
+
 			const request = new Request('http://localhost/api/contact', {
 				method: 'POST',
 				body: JSON.stringify({
@@ -295,10 +332,32 @@ describe('Contact Form API', () => {
 
 			// Should not reject - should sanitize and send
 			expect(response.status).not.toBe(400)
+
+			// Verify that dangerous characters are HTML-encoded in the email body
+			if (sentBody) {
+				const emailData = JSON.parse(sentBody)
+				// The name should be sanitized (<> removed) and HTML-encoded in email body
+				expect(emailData.html).toContain('&lt;script&gt;')
+			}
 		})
 
-		it('HTML-encodes dangerous characters in message', async () => {
+		it('sanitizes dangerous characters in message', async () => {
 			const env = createMockEnv()
+			// Mock KV to allow request (bypass rate limiting)
+			env.RATE_LIMIT_KV.get = vi.fn().mockResolvedValue(null)
+
+			// Track what was sent to fetch
+			let sentBody: string | null = null
+			mockFetch.mockImplementation((url: string, options: RequestInit) => {
+				sentBody = options.body as string
+				return Promise.resolve(
+					new Response(JSON.stringify({ id: 'email-123' }), {
+						status: 200,
+						headers: { 'Content-Type': 'application/json' },
+					})
+				)
+			})
+
 			const request = new Request('http://localhost/api/contact', {
 				method: 'POST',
 				body: JSON.stringify({
@@ -312,6 +371,13 @@ describe('Contact Form API', () => {
 
 			// Should not reject - should sanitize and send
 			expect(response.status).not.toBe(400)
+
+			// Verify that dangerous characters are HTML-encoded in the email body
+			if (sentBody) {
+				const emailData = JSON.parse(sentBody)
+				// The message should be HTML-encoded in email body
+				expect(emailData.html).toContain('&lt;img')
+			}
 		})
 	})
 
@@ -342,6 +408,9 @@ describe('Contact Form API', () => {
 
 		it('allows POST requests', async () => {
 			const env = createMockEnv()
+			// Mock KV to allow request (bypass rate limiting)
+			env.RATE_LIMIT_KV.get = vi.fn().mockResolvedValue(null)
+
 			const request = new Request('http://localhost/api/contact', {
 				method: 'POST',
 				body: JSON.stringify({

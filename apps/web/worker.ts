@@ -328,7 +328,7 @@ ${data.message}
 /**
  * Handles POST /api/contact requests
  */
-async function handleContactAPI(request: Request, env: Env): Promise<Response> {
+export async function handleContactAPI(request: Request, env: Env): Promise<Response> {
 	// Only allow POST requests
 	if (request.method !== 'POST') {
 		return new Response(JSON.stringify({ error: 'Method not allowed' }), {
