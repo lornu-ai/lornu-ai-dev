@@ -1,18 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { handleContactAPI } from '../worker'
 
+// Type for error responses from the contact API
+interface ErrorResponse {
+	error: string
+}
+
 // Mock Env for testing
 const createMockEnv = () => ({
-	ASSETS: { fetch: vi.fn(), connect: vi.fn() as any },
+	ASSETS: { fetch: vi.fn() },
 	RESEND_API_KEY: 'test-api-key',
 	CONTACT_EMAIL: 'test@example.com',
 	RATE_LIMIT_KV: {
 		get: vi.fn(),
 		put: vi.fn(),
 		delete: vi.fn(),
-		list: vi.fn(),
-		getWithMetadata: vi.fn(),
 	},
 })
 
@@ -28,6 +30,7 @@ describe('Contact Form API', () => {
 			})
 		)
 		// Replace global fetch with mock
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		globalThis.fetch = mockFetch as any
 	})
 
@@ -35,6 +38,7 @@ describe('Contact Form API', () => {
 		vi.restoreAllMocks()
 		// Restore original fetch if it exists
 		if (globalThis.fetch) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			delete (globalThis as any).fetch
 		}
 	})
@@ -106,7 +110,7 @@ describe('Contact Form API', () => {
 			const response = await handleContactAPI(request, env)
 
 			expect(response.status).toBe(413)
-			const data = await response.json() as any
+			const data = (await response.json()) as ErrorResponse
 			expect(data.error).toContain('too large')
 		})
 
@@ -161,7 +165,7 @@ describe('Contact Form API', () => {
 			const response = await handleContactAPI(request, env)
 
 			expect(response.status).toBe(400)
-			const data = await response.json() as any
+			const data = (await response.json()) as ErrorResponse
 			expect(data.error).toContain('email')
 		})
 
@@ -179,7 +183,7 @@ describe('Contact Form API', () => {
 			const response = await handleContactAPI(request, env)
 
 			expect(response.status).toBe(400)
-			const data = await response.json() as any
+			const data = (await response.json()) as ErrorResponse
 			expect(data.error).toContain('email')
 		})
 
@@ -199,7 +203,7 @@ describe('Contact Form API', () => {
 			const response = await handleContactAPI(request, env)
 
 			expect(response.status).toBe(400)
-			const data = await response.json() as any
+			const data = (await response.json()) as ErrorResponse
 			expect(data.error).toContain('email')
 		})
 
@@ -248,7 +252,7 @@ describe('Contact Form API', () => {
 			const response = await handleContactAPI(request, env)
 
 			expect(response.status).toBe(400)
-			const data = await response.json() as any
+			const data = (await response.json()) as ErrorResponse
 			expect(data.error).toContain('Name')
 		})
 
@@ -266,7 +270,7 @@ describe('Contact Form API', () => {
 			const response = await handleContactAPI(request, env)
 
 			expect(response.status).toBe(400)
-			const data = await response.json() as any
+			const data = (await response.json()) as ErrorResponse
 			expect(data.error).toContain('Name')
 		})
 
@@ -284,7 +288,7 @@ describe('Contact Form API', () => {
 			const response = await handleContactAPI(request, env)
 
 			expect(response.status).toBe(400)
-			const data = await response.json() as any
+			const data = (await response.json()) as ErrorResponse
 			expect(data.error).toContain('Message')
 		})
 
@@ -299,7 +303,7 @@ describe('Contact Form API', () => {
 			const response = await handleContactAPI(request, env)
 
 			expect(response.status).toBe(400)
-			const data = await response.json() as any
+			const data = (await response.json()) as ErrorResponse
 			expect(data.error).toContain('JSON')
 		})
 	})
@@ -400,7 +404,7 @@ describe('Contact Form API', () => {
 			const response = await handleContactAPI(request, env)
 
 			expect(response.status).toBe(405)
-			const data = await response.json() as any
+			const data = (await response.json()) as ErrorResponse
 			expect(data.error).toContain('not allowed')
 		})
 
@@ -449,7 +453,7 @@ describe('Contact Form API', () => {
 			})
 
 			const response = await handleContactAPI(request, env)
-			const data = await response.json() as any
+			const data = (await response.json()) as ErrorResponse
 
 			expect(data).toHaveProperty('error')
 			expect(typeof data.error).toBe('string')
