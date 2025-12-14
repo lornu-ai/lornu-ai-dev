@@ -326,15 +326,52 @@ ${data.message}
 }
 
 /**
+ * CORS headers for contact API
+ * Allows cross-origin requests from any domain
+ */
+const getCORSHeaders = (): Record<string, string> => ({
+	'Access-Control-Allow-Origin': '*',
+	'Access-Control-Allow-Methods': 'POST, OPTIONS',
+	'Access-Control-Allow-Headers': 'Content-Type',
+});
+
+/**
+ * Maximum request body size in bytes (10KB)
+ * Prevents DoS attacks via oversized payloads
+ */
+const MAX_REQUEST_SIZE = 10240;
+
+/**
  * Handles POST /api/contact requests
  */
 async function handleContactAPI(request: Request, env: Env): Promise<Response> {
+	const corsHeaders = getCORSHeaders();
+	// Handle CORS preflight requests
+	if (request.method === 'OPTIONS') {
+		return new Response(null, {
+			status: 204,
+			headers: corsHeaders,
+		});
+	}
+
 	// Only allow POST requests
 	if (request.method !== 'POST') {
 		return new Response(JSON.stringify({ error: 'Method not allowed' }), {
 			status: 405,
-			headers: { 'Content-Type': 'application/json' },
+			headers: { ...corsHeaders, 'Content-Type': 'application/json' },
 		});
+	}
+
+	// Validate request size to prevent DoS attacks
+	const contentLength = request.headers.get('content-length');
+	if (contentLength && parseInt(contentLength) > MAX_REQUEST_SIZE) {
+		return new Response(
+			JSON.stringify({ error: 'Request body too large (max 10KB)' }),
+			{
+				status: 413,
+				headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+			}
+		);
 	}
 
 	// Check rate limit
@@ -349,6 +386,7 @@ async function handleContactAPI(request: Request, env: Env): Promise<Response> {
 			{
 				status: 429,
 				headers: {
+					...corsHeaders,
 					'Content-Type': 'application/json',
 					'Retry-After': '3600', // 1 hour
 				},
@@ -363,7 +401,7 @@ async function handleContactAPI(request: Request, env: Env): Promise<Response> {
 	} catch (error) {
 		return new Response(JSON.stringify({ error: 'Invalid JSON in request body' }), {
 			status: 400,
-			headers: { 'Content-Type': 'application/json' },
+			headers: { ...corsHeaders, 'Content-Type': 'application/json' },
 		});
 	}
 
@@ -371,7 +409,7 @@ async function handleContactAPI(request: Request, env: Env): Promise<Response> {
 	if (!validation.valid || !validation.data) {
 		return new Response(JSON.stringify({ error: validation.error || 'Validation failed' }), {
 			status: 400,
-			headers: { 'Content-Type': 'application/json' },
+			headers: { ...corsHeaders, 'Content-Type': 'application/json' },
 		});
 	}
 
@@ -380,7 +418,7 @@ async function handleContactAPI(request: Request, env: Env): Promise<Response> {
 	if (!emailResult.success) {
 		return new Response(JSON.stringify({ error: emailResult.error || 'Failed to send email' }), {
 			status: 500,
-			headers: { 'Content-Type': 'application/json' },
+			headers: { ...corsHeaders, 'Content-Type': 'application/json' },
 		});
 	}
 
@@ -393,6 +431,7 @@ async function handleContactAPI(request: Request, env: Env): Promise<Response> {
 		{
 			status: 200,
 			headers: {
+				...corsHeaders,
 				'Content-Type': 'application/json',
 				'X-RateLimit-Remaining': rateLimit.remaining.toString(),
 			},
