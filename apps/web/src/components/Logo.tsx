@@ -17,14 +17,17 @@
  */
 
 import { motion } from 'framer-motion'
-// Logo file must exist at @/assets/logo.png - no fallback behavior
-// If the file is missing, the build will fail, ensuring the logo is always present
+// Logo files - supports both PNG (legacy) and SVG variants
 import logo from '@/assets/logo.png'
+import logo3 from '@/assets/logo3.svg'
 
 interface LogoProps {
   className?: string
   onClick?: () => void
   size?: 'sm' | 'md' | 'lg'
+  width?: number
+  height?: number
+  variant?: 'default' | 'option3'
 }
 
 const sizeClasses = {
@@ -33,12 +36,34 @@ const sizeClasses = {
   lg: 'h-12'
 }
 
-export function Logo({ className = '', onClick, size = 'md' }: LogoProps) {
+const logoVariants = {
+  default: logo,
+  option3: logo3
+}
+
+export function Logo({
+  className = '',
+  onClick,
+  size = 'md',
+  width,
+  height,
+  variant = 'default'
+}: LogoProps) {
+  const logoSource = logoVariants[variant]
+
+  // Use explicit width/height if provided, otherwise use size classes
+  const style = width || height
+    ? { width: width ? `${width}px` : undefined, height: height ? `${height}px` : undefined }
+    : {}
+
+  const sizeClass = width || height ? '' : sizeClasses[size]
+
   const content = (
-    <img 
-      src={logo} 
-      alt="Lornuai Enterprise AI Logo" 
-      className={`${sizeClasses[size]} w-auto ${className}`}
+    <img
+      src={logoSource}
+      alt="Lornuai Enterprise AI Logo"
+      className={`${sizeClass} w-auto ${className}`}
+      style={style}
     />
   )
 
@@ -66,4 +91,3 @@ export function Logo({ className = '', onClick, size = 'md' }: LogoProps) {
     </motion.div>
   )
 }
-

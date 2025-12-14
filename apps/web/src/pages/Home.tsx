@@ -118,7 +118,7 @@ export default function Home() {
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
-                  className={`text-sm font-semibold transition-colors capitalize ${
+                  className={`text-base font-semibold transition-colors capitalize ${
                     activeSection === section
                       ? 'text-foreground'
                       : 'text-muted-foreground hover:text-foreground'
@@ -151,6 +151,15 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
+            {/* Large Hero Logo */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="mb-8 flex justify-center"
+            >
+              <Logo variant="option3" width={300} height={300} className="drop-shadow-2xl" />
+            </motion.div>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight">
               <span className="gradient-text">Build the Future</span>
               <br />
