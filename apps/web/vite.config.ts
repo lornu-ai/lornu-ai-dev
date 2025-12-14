@@ -32,9 +32,9 @@ export default defineConfig({
         manualChunks: (id) => {
           // Vendor chunks for better caching and code splitting
           if (id.includes('node_modules')) {
-            // React core libraries
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'vendor-react';
+            // Icon libraries - check before generic 'react' to avoid incorrect matching
+            if (id.includes('@phosphor-icons') || id.includes('@heroicons') || id.includes('lucide-react')) {
+              return 'vendor-icons';
             }
             // Radix UI components - group all together
             if (id.includes('@radix-ui')) {
@@ -48,9 +48,13 @@ export default defineConfig({
             if (id.includes('framer-motion')) {
               return 'vendor-animations';
             }
-            // Icon libraries
-            if (id.includes('@phosphor-icons') || id.includes('@heroicons') || id.includes('lucide-react')) {
-              return 'vendor-icons';
+            // React core libraries - use specific paths to avoid matching react-* packages
+            if (
+              id.includes('node_modules/react/') ||
+              id.includes('node_modules/react-dom/') ||
+              id.includes('node_modules/react-router')
+            ) {
+              return 'vendor-react';
             }
             // Other vendor libraries
             return 'vendor-misc';
@@ -58,6 +62,6 @@ export default defineConfig({
         }
       }
     },
-    chunkSizeWarningLimit: 600, // Temporarily increased while optimizing
+    chunkSizeWarningLimit: 600, // TODO: Temporarily increased while optimizing. Revisit and reduce to 500 (default) or lower once bundle optimizations are complete.
   },
 });
