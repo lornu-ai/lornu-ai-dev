@@ -99,7 +99,6 @@ export default function Home() {
     } finally {
       setIsSubmitting(false)
     }
->>>>>>> 5e3f578... Fix contact form reset error and add test script
   }
 
   const services = [
