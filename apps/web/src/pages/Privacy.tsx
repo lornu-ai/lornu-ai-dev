@@ -11,7 +11,7 @@ export default function Privacy() {
   return (
     <>
       <SEOHead
-        title="Privacy Policy - LornuAI"
+        title="Privacy Policy"
         description="Privacy Policy for LornuAI platform. Learn how we protect and handle your data with our AI-powered enterprise solutions."
         canonical="/privacy"
       />

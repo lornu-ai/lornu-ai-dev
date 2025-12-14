@@ -11,7 +11,7 @@ export default function Security() {
   return (
     <>
       <SEOHead
-        title="Security - LornuAI"
+        title="Security Standards"
         description="Security information for LornuAI platform. Learn about our security practices and how we protect your enterprise data."
         canonical="/security"
       />
@@ -390,7 +390,7 @@ export default function Security() {
                     <strong>LornuAI Inc.</strong><br />
                     Security Team: security@lornu.ai<br />
                     Privacy Contact: privacy@lornu.ai<br />
-                    General Inquiries: <Link to="/" className="text-accent hover:underline">lornu.ai/contact</Link>
+                    General Inquiries: <a href="mailto:contact@lornu.ai" className="text-accent hover:underline">contact@lornu.ai</a>
                   </p>
                 </div>
               </section>
