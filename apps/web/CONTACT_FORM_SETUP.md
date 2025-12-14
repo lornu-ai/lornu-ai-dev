@@ -4,7 +4,7 @@ This guide explains how to configure the contact form API endpoint to send email
 
 ## Overview
 
-The contact form (`/contact` page) sends submissions to `/api/contact` endpoint, which:
+The contact form on the home page sends submissions to `/api/contact` endpoint, which:
 - Validates the form data (client and server-side)
 - Applies rate limiting (5 requests per hour per IP, optional with KV)
 - Sends emails via Resend API to `contact@lornu.ai`
@@ -116,7 +116,7 @@ bunx wrangler dev
 
 2. Deploy via Cloudflare Git Integration (automatic on push to `main` or `develop`)
 
-3. Verify the contact form at `https://lornu.ai/contact`
+3. Verify the contact form at `https://lornu.ai` (scroll to contact section)
 
 ## Email Format
 
