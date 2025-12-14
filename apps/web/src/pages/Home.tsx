@@ -391,8 +391,17 @@ export default function Home() {
                   className="w-full gradient-bg hover:opacity-90 text-lg"
                   disabled={isSubmitting}
                 >
-                  <Envelope className="mr-2" weight="bold" />
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  {isSubmitting ? (
+                    <>
+                      <span className="animate-spin mr-2">⏳</span>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Envelope className="mr-2" weight="bold" />
+                      Send Message
+                    </>
+                  )}
                 </Button>
               </form>
             </Card>
