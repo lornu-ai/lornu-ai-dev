@@ -5,7 +5,7 @@
  */
 
 import { motion } from 'framer-motion'
-import logo from '@/assets/logo.svg'
+import logo from '@/assets/logo.png'
 
 interface LogoProps {
   className?: string
