@@ -131,7 +131,7 @@ export default function Home() {
 
             <Button
               onClick={() => scrollToSection('contact')}
-              className="hidden md:inline-flex gradient-bg hover:opacity-90 text-lg px-8 py-6 h-auto"
+              className="hidden md:inline-flex gradient-bg hover:opacity-90 text-base px-6 py-4 h-auto"
             >
               Get Started
             </Button>
