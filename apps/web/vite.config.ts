@@ -44,7 +44,7 @@ export default defineConfig({
             if (id.includes('@radix-ui')) {
               return 'vendor-radix-ui';
             }
-            // Chart libraries (lazy load if not used on initial page)
+            // Chart libraries (e.g., recharts) - create a separate chunk to improve caching and reduce initial bundle size; does not control when the chunk is loaded
             if (id.includes('recharts')) {
               return 'vendor-charts';
             }
