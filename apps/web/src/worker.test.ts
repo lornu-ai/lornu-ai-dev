@@ -333,11 +333,14 @@ describe('Contact Form API', () => {
 			// Should not reject - should sanitize and send
 			expect(response.status).not.toBe(400)
 
-			// Verify that dangerous characters are HTML-encoded in the email body
+			// Verify that dangerous characters are sanitized and HTML-encoded in the email body
 			if (sentBody) {
 				const emailData = JSON.parse(sentBody)
-				// The name should be sanitized (<> removed) and HTML-encoded in email body
-				expect(emailData.html).toContain('&lt;script&gt;')
+				// The name is sanitized (<> removed by sanitizeString) then HTML-encoded
+				// So we should see the sanitized version (script tags removed) in the HTML
+				expect(emailData.html).toContain('script')
+				// But the < and > should be removed by sanitizeString, not encoded
+				expect(emailData.html).not.toContain('<script>')
 			}
 		})
 
@@ -372,11 +375,14 @@ describe('Contact Form API', () => {
 			// Should not reject - should sanitize and send
 			expect(response.status).not.toBe(400)
 
-			// Verify that dangerous characters are HTML-encoded in the email body
+			// Verify that dangerous characters are sanitized and HTML-encoded in the email body
 			if (sentBody) {
 				const emailData = JSON.parse(sentBody)
-				// The message should be HTML-encoded in email body
-				expect(emailData.html).toContain('&lt;img')
+				// The message is sanitized (<> removed by sanitizeString) then HTML-encoded
+				// So we should see the sanitized version (img tag removed) in the HTML
+				expect(emailData.html).toContain('img src=x')
+				// But the < and > should be removed by sanitizeString, not encoded
+				expect(emailData.html).not.toContain('<img')
 			}
 		})
 	})
