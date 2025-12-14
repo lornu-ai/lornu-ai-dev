@@ -16,6 +16,12 @@ dist-ssr
 # npm files (project uses Bun)
 package-lock.json
 
+# macOS duplicate files
+**/* 2.*
+**/* 3.*
+**/* 4.*
+**/* 5.*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
