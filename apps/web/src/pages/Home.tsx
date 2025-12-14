@@ -81,7 +81,14 @@ export default function Home() {
         body: JSON.stringify({ name, email, message }),
       })
 
-      const data = await response.json()
+      let data: any = null
+      try {
+        data = await response.json()
+      } catch (jsonError) {
+        // If response is not JSON, try to get text for more context
+        const text = await response.text().catch(() => '')
+        data = { error: text || 'Failed to parse error response' }
+      }
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to send message')
