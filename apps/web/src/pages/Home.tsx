@@ -104,21 +104,21 @@ export default function Home() {
         isScrolled ? 'bg-card/80 backdrop-blur-lg shadow-lg' : 'bg-transparent'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-20 md:h-24">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               className="text-2xl font-bold gradient-text"
             >
-              <Logo width={120} height={40} />
+              <Logo width={140} height={50} />
             </motion.div>
 
-            <div className="hidden md:flex space-x-8">
+            <div className="hidden md:flex space-x-10">
               {['home', 'services', 'about', 'contact'].map((section) => (
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
-                  className={`text-base font-semibold transition-colors capitalize ${
+                  className={`text-lg font-semibold transition-colors capitalize ${
                     activeSection === section
                       ? 'text-foreground'
                       : 'text-muted-foreground hover:text-foreground'
@@ -131,7 +131,7 @@ export default function Home() {
 
             <Button
               onClick={() => scrollToSection('contact')}
-              className="hidden md:inline-flex gradient-bg hover:opacity-90"
+              className="hidden md:inline-flex gradient-bg hover:opacity-90 text-lg px-8 py-6 h-auto"
             >
               Get Started
             </Button>
@@ -151,15 +151,6 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            {/* Large Hero Logo */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="mb-8 flex justify-center"
-            >
-              <Logo variant="option3" width={300} height={300} className="drop-shadow-2xl" />
-            </motion.div>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight">
               <span className="gradient-text">Build the Future</span>
               <br />
