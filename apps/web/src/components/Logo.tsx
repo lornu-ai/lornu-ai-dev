@@ -17,6 +17,8 @@
  */
 
 import { motion } from 'framer-motion'
+// Logo file must exist at @/assets/logo.png - no fallback behavior
+// If the file is missing, the build will fail, ensuring the logo is always present
 import logo from '@/assets/logo.png'
 
 interface LogoProps {
