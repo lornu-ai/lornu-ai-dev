@@ -21,9 +21,7 @@ export default function SEOHead({
   ogType = 'website',
   twitterCard = 'summary_large_image',
 }: SEOHeadProps) {
-  const fullTitle = title.toLowerCase().includes('lornuai')
-    ? title
-    : `${title} | LornuAI`
+  const fullTitle = `${title} | LornuAI`
   const fullCanonical = canonical ? `https://lornu.ai${canonical}` : 'https://lornu.ai'
 
   return (

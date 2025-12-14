@@ -11,7 +11,7 @@ export default function Security() {
   return (
     <>
       <SEOHead
-        title="Security - LornuAI"
+        title="Security Standards"
         description="Security information for LornuAI platform. Learn about our security practices and how we protect your enterprise data."
         canonical="/security"
       />
