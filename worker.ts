@@ -60,7 +60,14 @@ const MIME_TYPES: Record<string, string> = {
  */
 function getMimeType(path: string): string | null {
 	const lowerPath = path.toLowerCase();
-	const ext = lowerPath.substring(lowerPath.lastIndexOf('.'));
+	const lastDotIndex = lowerPath.lastIndexOf('.');
+
+	// Return null if no extension found
+	if (lastDotIndex === -1) {
+		return null;
+	}
+
+	const ext = lowerPath.substring(lastDotIndex);
 	return MIME_TYPES[ext] || null;
 }
 
@@ -373,7 +380,6 @@ export async function handleContactAPI(request: Request, env: Env): Promise<Resp
 	}
 
 	// Validate request size to prevent DoS attacks
-	// Validate request size to prevent DoS attacks
 	const contentLength = request.headers.get('content-length');
 	if (contentLength && parseInt(contentLength, 10) > MAX_REQUEST_SIZE) {
 		return new Response(
@@ -462,6 +468,36 @@ export default {
 		// Serve static assets
 		const response = await env.ASSETS.fetch(request);
 
+		// Handle SPA routing: if the asset is not found (404), serve index.html
+		// This allows React Router to handle client-side routing
+		if (response.status === 404) {
+			// Check if this is a file request (has an extension) or an API route
+			// We assume paths without a dot in the last segment are routes, not files
+			const lastSegment = url.pathname.split('/').pop() ?? '';
+			const hasExtension = lastSegment.includes('.');
+
+			if (!hasExtension && !url.pathname.startsWith('/api/')) {
+				// Serve index.html for SPA routes
+				const indexResponse = await env.ASSETS.fetch(
+					new Request(new URL('/index.html', request.url), {
+						method: request.method,
+						headers: request.headers,
+					})
+				);
+
+				// If index.html exists, return it with proper Content-Type
+				if (indexResponse.status === 200) {
+					const newHeaders = new Headers(indexResponse.headers);
+					newHeaders.set("Content-Type", "text/html;charset=UTF-8");
+					return new Response(indexResponse.body, {
+						status: 200,
+						statusText: "OK",
+						headers: newHeaders,
+					});
+				}
+			}
+		}
+
 		// Check if Content-Type header is missing
 		const contentType = response.headers.get("Content-Type");
 		if (!contentType) {
@@ -469,7 +505,8 @@ export default {
 
 			// Fallback: If path is root or has no extension, assume HTML
 			// This fixes issues where ASSETS binding returns 200 for directories but misses the header
-			if (!mimeType && (url.pathname === '/' || !url.pathname.includes('.'))) {
+			const lastSegment = url.pathname.split('/').pop() ?? '';
+			if (!mimeType && (url.pathname === '/' || !lastSegment.includes('.'))) {
 				mimeType = 'text/html;charset=UTF-8';
 			}
 
