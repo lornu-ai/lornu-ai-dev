@@ -2,7 +2,7 @@
 
 **Status:** Active Setup
 **Last Updated:** 2025-12-15
-**Account:** https://uptime.betterstack.com/team/t483057/monitors
+**Account:** Access your Better Stack dashboard at https://uptime.betterstack.com
 
 ## Overview
 
@@ -19,7 +19,8 @@ This guide walks through setting up uptime monitoring in Better Stack for `lornu
 ### Monitor 1: Frontend (lornu.ai)
 
 1. **Navigate to Monitors:**
-   - Go to: https://uptime.betterstack.com/team/t483057/monitors
+   - Log in to your Better Stack account
+   - Go to the Monitors section in your dashboard
    - Click **"Add Monitor"** or **"New Monitor"**
 
 2. **Monitor Configuration:**
@@ -230,8 +231,9 @@ curl -I https://lornu.ai/
 
 ### Monitor Status
 
-Check monitor status at:
-- **Monitors Dashboard:** https://uptime.betterstack.com/team/t483057/monitors
+Check monitor status in your Better Stack dashboard:
+- Navigate to the Monitors section
+- Verify both monitors show "Up" status (green)
 
 Expected status:
 - ✅ **LornuAI Frontend:** Up (green)
