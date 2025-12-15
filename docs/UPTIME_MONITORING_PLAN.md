@@ -18,6 +18,12 @@
 - ✅ Placed alongside Privacy, Terms, Security links
 - ✅ Opens in new tab with proper security attributes
 
+### 3. Performance Monitoring
+- ✅ Cloudflare Performance Reporting configured
+- ✅ Monitoring: `https://lornu.ai/` (Desktop, US Central)
+- ✅ Available at: [Cloudflare Dashboard](https://dash.cloudflare.com/1d361f061ebf3d1a293900bdb815db26/lornu.ai/speed/test/lornu.ai%2F/history/desktop/us-central1)
+- ✅ Tracks Core Web Vitals and performance metrics
+
 ## 📋 Pending (External Configuration)
 
 ### Subdomain Decision

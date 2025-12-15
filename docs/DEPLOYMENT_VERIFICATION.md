@@ -7,6 +7,17 @@
 
 This guide outlines the two-tier approach for verifying deployments: a fast API health check and a comprehensive E2E smoke test.
 
+## Existing Monitoring
+
+### Cloudflare Performance Reporting
+
+Performance monitoring is already configured:
+- **Dashboard:** [Cloudflare Performance](https://dash.cloudflare.com/1d361f061ebf3d1a293900bdb815db26/lornu.ai/speed/test/lornu.ai%2F/history/desktop/us-central1)
+- **Tracks:** Core Web Vitals, page load times, performance scores
+- **Location:** Desktop, US Central
+
+**Note:** This complements but doesn't replace uptime monitoring. Use both for comprehensive coverage.
+
 ## Two-Tier Verification Strategy
 
 ### Tier 1: API Health Check (Fastest - < 1 second)

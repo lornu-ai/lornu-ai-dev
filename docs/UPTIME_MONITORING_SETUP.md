@@ -11,8 +11,34 @@ This guide walks through setting up external uptime monitoring and a public stat
 
 - ✅ Health endpoint implemented: `https://lornu.ai/api/health`
 - ✅ Status page link added to footer
+- ✅ Cloudflare Performance Reporting configured (performance monitoring)
 - ⏳ External monitoring service account needed
 - ⏳ DNS access for `status.lornu.ai` subdomain
+
+## Existing Monitoring
+
+### Cloudflare Performance Reporting
+
+You already have **Cloudflare Performance Reporting** configured:
+- **URL:** [Performance Dashboard](https://dash.cloudflare.com/1d361f061ebf3d1a293900bdb815db26/lornu.ai/speed/test/lornu.ai%2F/history/desktop/us-central1)
+- **Monitors:** Desktop performance (US Central)
+- **Metrics:** Core Web Vitals, page load times, performance scores
+
+**Note:** This provides performance monitoring but not uptime/availability monitoring. The external monitoring service (UptimeRobot, etc.) will complement this by:
+- Checking availability (is the site up?)
+- Alerting on downtime
+- Providing public status page
+- Monitoring health endpoint specifically
+
+## Monitoring Strategy
+
+### Current Setup
+- **Performance Monitoring:** Cloudflare Performance Reporting (already configured)
+- **Uptime Monitoring:** External service needed (see below)
+
+### Why Both?
+- **Cloudflare Performance:** Tracks page speed, Core Web Vitals, user experience
+- **External Uptime:** Tracks availability, alerts on downtime, public status page
 
 ## Step 1: Choose Monitoring Service
 
