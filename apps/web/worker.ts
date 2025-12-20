@@ -6,6 +6,10 @@ export interface Env {
 	CONTACT_EMAIL?: string;
 	// Optional: KV namespace for rate limiting
 	RATE_LIMIT_KV?: KVNamespace;
+	// Optional: secret to bypass rate limiting for CI (matches X-Bypass-Rate-Limit)
+	RATE_LIMIT_BYPASS_SECRET?: string;
+	// Optional: secret to bypass sending emails for CI (matches X-Bypass-Email)
+	EMAIL_BYPASS_SECRET?: string;
 }
 
 /**
@@ -360,6 +364,11 @@ const MAX_REQUEST_SIZE = 10240;
  */
 export async function handleContactAPI(request: Request, env: Env): Promise<Response> {
 	const corsHeaders = getCORSHeaders();
+
+	const bypassRateHeader = request.headers.get('X-Bypass-Rate-Limit');
+	const bypassEmailHeader = request.headers.get('X-Bypass-Email');
+	const bypassRateLimit = Boolean(env.RATE_LIMIT_BYPASS_SECRET) && bypassRateHeader === env.RATE_LIMIT_BYPASS_SECRET;
+	const bypassEmailSend = Boolean(env.EMAIL_BYPASS_SECRET) && bypassEmailHeader === env.EMAIL_BYPASS_SECRET;
 	// Handle CORS preflight requests
 	if (request.method === 'OPTIONS') {
 		return new Response(null, {
@@ -389,9 +398,12 @@ export async function handleContactAPI(request: Request, env: Env): Promise<Resp
 		);
 	}
 
-	// Check rate limit
-	const clientIP = getClientIP(request);
-	const rateLimit = await checkRateLimit(clientIP, env.RATE_LIMIT_KV);
+	// Check rate limit (unless bypassed via header)
+	let rateLimit = { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS };
+	if (!bypassRateLimit) {
+		const clientIP = getClientIP(request);
+		rateLimit = await checkRateLimit(clientIP, env.RATE_LIMIT_KV);
+	}
 
 	if (!rateLimit.allowed) {
 		return new Response(
@@ -428,8 +440,11 @@ export async function handleContactAPI(request: Request, env: Env): Promise<Resp
 		});
 	}
 
-	// Send email
-	const emailResult = await sendEmail(validation.data, env);
+	// Send email (unless bypassed via header for CI)
+	let emailResult: { success: boolean; error?: string } = { success: true };
+	if (!bypassEmailSend) {
+		emailResult = await sendEmail(validation.data, env);
+	}
 	if (!emailResult.success) {
 		return new Response(JSON.stringify({ error: emailResult.error || 'Failed to send email' }), {
 			status: 500,
