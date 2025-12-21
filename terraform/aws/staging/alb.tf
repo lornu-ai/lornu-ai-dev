@@ -41,11 +41,11 @@ resource "aws_lb_target_group" "app" {
 
   health_check {
     path                = "/api/health" # Assuming backend has this
-    healthy_threshold   = 2
-    unhealthy_threshold = 10
-    timeout             = 60
-    interval            = 300
+    timeout             = 5
+    interval            = 30
     matcher             = "200"
+    healthy_threshold   = 2
+    unhealthy_threshold = 3
   }
 }
 
@@ -59,8 +59,4 @@ resource "aws_lb_listener" "http" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.app.arn
   }
-}
-
-output "alb_dns_name" {
-  value = aws_lb.main.dns_name
 }

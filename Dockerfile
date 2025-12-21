@@ -54,4 +54,4 @@ EXPOSE 8080
 # Run the application
 # Note: 'backend.main' assumes the file packages/api/main.py exists.
 # This CMD will need to be updated once FastAPI is fully implemented (e.g. uvicorn backend.main:app)
-CMD ["uv", "run", "python", "-m", "backend.main"]
+CMD ["uv", "run", "uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8080"]
