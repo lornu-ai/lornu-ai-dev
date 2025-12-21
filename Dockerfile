@@ -25,14 +25,14 @@ FROM python:3.11-slim AS runtime
 WORKDIR /app
 
 # Install uv for fast Python package management
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.5.11 /uv /bin/uv
 
 # Copy backend dependency files
 COPY packages/api/pyproject.toml packages/api/uv.lock ./
 
 # Install backend dependencies
 # --system flag installs into the system python environment, which is fine for a container
-RUN uv sync --frozen
+RUN uv sync --frozen --system
 
 # Copy Backend Application Logic
 # We rename 'packages/api' to 'backend' inside the container for clarity/import convention

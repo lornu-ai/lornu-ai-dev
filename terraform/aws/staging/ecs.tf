@@ -25,7 +25,7 @@ resource "aws_security_group" "ecs_tasks" {
 
 resource "aws_cloudwatch_log_group" "logs" {
   name              = "/ecs/lornu-app-${var.environment}"
-  retention_in_days = 7
+  retention_in_days = 14
 }
 
 resource "aws_ecs_task_definition" "app" {
@@ -59,6 +59,12 @@ resource "aws_ecs_task_definition" "app" {
         { name = "ENVIRONMENT", value = var.environment }
       ]
       # Add Secrets here if var.secret_gemini_api_key_arn is set
+      secrets = var.secret_gemini_api_key_arn != "" ? [
+        {
+          name      = "GEMINI_API_KEY"
+          valueFrom = var.secret_gemini_api_key_arn
+        }
+      ] : []
     }
   ])
 }
@@ -82,4 +88,6 @@ resource "aws_ecs_service" "main" {
   }
 
   desired_count = 1
+
+  depends_on = [aws_lb_listener.http]
 }

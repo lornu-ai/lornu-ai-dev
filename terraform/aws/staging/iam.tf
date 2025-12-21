@@ -24,7 +24,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
 resource "aws_iam_policy" "secrets_access" {
   count       = var.secret_gemini_api_key_arn != "" ? 1 : 0
   name        = "lornu-secrets-access-${var.environment}"
-  description = "Allow ECS tasks to read specifics secrets"
+  description = "Allow ECS tasks to read specific secrets"
 
   policy = jsonencode({
     Version = "2012-10-17"
