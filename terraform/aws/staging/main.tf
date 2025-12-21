@@ -7,13 +7,12 @@ terraform {
   }
 
   # Terraform Cloud Backend Configuration
-  # This block will be active once the User connects TFC.
-  # backend "remote" {
-  #   organization = "lornu-ai"
-  #   workspaces {
-  #     name = "lornu-aws-staging"
-  #   }
-  # }
+  backend "remote" {
+    organization = "lornu-ai"
+    workspaces {
+      name = "lornu-aws-staging"
+    }
+  }
 }
 
 provider "aws" {
