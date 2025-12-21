@@ -360,6 +360,23 @@ const getCORSHeaders = (): Record<string, string> => ({
 const MAX_REQUEST_SIZE = 10240;
 
 /**
+ * Handles GET /api/health requests
+ * Lightweight health check endpoint for uptime monitoring
+ * Returns a simple 200 OK with minimal JSON payload
+ */
+export async function handleHealthAPI(): Promise<Response> {
+	return new Response(
+		JSON.stringify({ status: 'ok' }),
+		{
+			status: 200,
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		}
+	);
+}
+
+/**
  * Handles POST /api/contact requests
  */
 export async function handleContactAPI(request: Request, env: Env): Promise<Response> {
@@ -474,8 +491,24 @@ export default {
 		const url = new URL(request.url);
 
 		// Handle API routes
+		if (url.pathname === '/api/health') {
+			return handleHealthAPI();
+		}
 		if (url.pathname === '/api/contact') {
 			return handleContactAPI(request, env);
+		}
+
+		// Handle Spark library endpoints
+		// Spark uses /_spark/loaded for tracking/analytics
+		if (url.pathname === '/_spark/loaded') {
+			// Return 200 OK for Spark tracking endpoint
+			// This is a no-op endpoint used by the Spark library
+			return new Response(JSON.stringify({ status: 'ok' }), {
+				status: 200,
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
 		}
 
 		// Serve static assets
