@@ -1,8 +1,5 @@
-# Large binary assets - download from Google Drive
-*.png
-*.jpg
-*.jpeg
-*.webp
+# Large brand logo asset - download from Google Drive
+lornu-ai-final.png
 
 # Keep README
 !README.md

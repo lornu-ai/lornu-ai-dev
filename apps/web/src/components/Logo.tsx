@@ -51,10 +51,9 @@ export function Logo({
   const content = (
     <img
       src={LogoPng}
-      alt="LornuAI Logo"
+      alt="Lornuai Enterprise AI Logo"
       className={`${sizeClass} w-auto object-contain ${className}`}
       style={style}
-      aria-label="Lornuai Enterprise AI Logo"
     />
   )
 
