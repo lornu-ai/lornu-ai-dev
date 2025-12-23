@@ -503,7 +503,7 @@ describe('Static Assets and Routing', () => {
 		env.ASSETS.fetch = vi.fn().mockResolvedValue(mockResponse)
 
 		const req = new Request('http://localhost/')
-		const res = await workerDefault.fetch(req, env as any)
+		const res = await workerDefault.fetch(req, env as unknown as Env)
 		expect(res.status).toBe(200)
 		expect(res.headers.get('Content-Type')).toBe('text/html;charset=UTF-8')
 	})
@@ -517,7 +517,7 @@ describe('Static Assets and Routing', () => {
 		env.ASSETS.fetch = vi.fn().mockResolvedValue(mockResponse)
 
 		const req = new Request('http://localhost/styles.css')
-		const res = await workerDefault.fetch(req, env as any)
+		const res = await workerDefault.fetch(req, env as unknown as Env)
 		expect(res.status).toBe(200)
 		expect(res.headers.get('Content-Type')).toBe('text/css;charset=UTF-8')
 	})

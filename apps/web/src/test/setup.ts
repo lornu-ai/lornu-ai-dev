@@ -15,7 +15,8 @@ const localStorageMock = (() => {
   return {
     getItem: (key: string) => store[key] || null,
     setItem: (key: string, value: string) => {
-      store[key] = value.toString()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      store[key] = value.toString() as any
     },
     removeItem: (key: string) => {
       delete store[key]
