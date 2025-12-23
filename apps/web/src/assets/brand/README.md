@@ -11,6 +11,8 @@ The new logo should be placed here:
 - **Size:** Keep below 500KB for optimal performance
 - **Source:** [Google Drive](https://drive.google.com/file/d/1mmpkYJHyucyz2SD94mvGUrQkHtO66hVN/view?usp=drive_link)
 
+> **Note:** For improved CI/CD automation and developer experience, consider using [Git LFS (Large File Storage)](https://git-lfs.github.com/) for managing large brand assets in the future. This would eliminate manual download steps and ensure consistent asset availability across all environments.
+
 ### Setup Instructions
 
 1. Download `lornu-ai-final.png` from the Google Drive link above
