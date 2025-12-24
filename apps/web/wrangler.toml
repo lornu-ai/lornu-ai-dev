@@ -25,17 +25,6 @@ id = "8f08c5bb53f44bbab031992ca3531429"
 [observability]
 enabled = true
 
-# Production domain routes
-# Note: Custom domains must be configured in Cloudflare dashboard first
-# Remove or modify these routes for development/staging environments
-[[routes]]
-pattern = "lornu.ai"
-custom_domain = true
-
-[[routes]]
-pattern = "www.lornu.ai"
-custom_domain = true
-
 # Staging Environment
 # Used for preview deployments and smoke testing before promotion to production.
 # Deploys to: https://lornu-ai-staging.<your-subdomain>.workers.dev
