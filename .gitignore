@@ -22,6 +22,9 @@ out
 # Misc
 .DS_Store
 *.pem
+.wrangler/
+.pytest_cache/
+__pycache__/
 
 # macOS duplicate files (space + number + extension)
 **/* 2.*

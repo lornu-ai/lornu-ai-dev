@@ -3,16 +3,12 @@
 ## Tech Stack
 - **Frontend:** React + Vite (located in `apps/web`)
 - **Package Manager (JS):** **Bun** (Always use `bun install`, `bun run`, `bunx`). NEVER use npm/yarn.
-- **Backend:** Python 3.11+ (located in `packages/api`)
-- **Package Manager (Python):** **uv** (Use `uv sync`, `uv pip install`).
-- **Infrastructure:** Terraform (AWS), Docker, Kubernetes (Kustomize).
-  - **Terraform Cloud Config:** Uses `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` for authentication.
+- **Backend/Edge Logic:** Cloudflare Worker (`apps/web/worker.ts`).
+- **Deployment:** Cloudflare Workers (via GitHub Integration).
 
 ## Directory Structure
-- `apps/web`: Frontend application.
-- `packages/api`: Backend API/Logic.
-- `terraform/`: Infrastructure as Code.
-- `k8s/`: Kubernetes manifests (Base + Overlays).
+- `apps/web`: Frontend application and Cloudflare Worker logic.
+- `packages/`: Shared packages and Agent logic.
 - `docs/`: Project documentation.
 
 ## Workflow Rules
@@ -30,4 +26,4 @@
 
 ## Specific Configurations
 - **Tailwind:** Configured in `apps/web/tailwind.config.js`. Uses `oklch` colors.
-- **Docker:** Multi-stage build located at root `Dockerfile`.
+- **Worker Configuration:** Managed via `apps/web/wrangler.toml`.
