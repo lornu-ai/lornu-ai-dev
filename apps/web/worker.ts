@@ -10,6 +10,10 @@ export interface Env {
 	RATE_LIMIT_BYPASS_SECRET?: string;
 	// Optional: secret to bypass sending emails for CI (matches X-Bypass-Email)
 	EMAIL_BYPASS_SECRET?: string;
+	// Optional: Rate limit window in milliseconds
+	RATE_LIMIT_WINDOW_MS?: string;
+	// Optional: Max requests per rate limit window
+	RATE_LIMIT_MAX_REQUESTS?: string;
 }
 
 /**
@@ -75,8 +79,15 @@ function getMimeType(path: string): string | null {
 /**
  * Rate limiting configuration
  */
-const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour in milliseconds
-const RATE_LIMIT_MAX_REQUESTS = 5; // Max 5 requests per hour per IP
+function getRateLimitWindow(env: Env): number {
+  const value = env.RATE_LIMIT_WINDOW_MS;
+  return value ? parseInt(value, 10) : 60 * 60 * 1000; // 1 hour default
+}
+
+function getRateLimitMaxRequests(env: Env): number {
+  const value = env.RATE_LIMIT_MAX_REQUESTS;
+  return value ? parseInt(value, 10) : 5; // 5 requests default
+}
 
 /**
  * Validates email format using a more robust RFC 5322-compliant pattern
@@ -193,10 +204,14 @@ function validateContactForm(data: unknown): { valid: boolean; data?: { name: st
 /**
  * Checks rate limit for an IP address
  */
-async function checkRateLimit(ip: string, kv: KVNamespace | undefined): Promise<{ allowed: boolean; remaining: number }> {
+async function checkRateLimit(ip: string, env: Env): Promise<{ allowed: boolean; remaining: number }> {
+	const kv = env.RATE_LIMIT_KV;
+	const rateLimitWindow = getRateLimitWindow(env);
+	const rateLimitMaxRequests = getRateLimitMaxRequests(env);
+
 	if (!kv) {
 		// If KV is not configured, allow all requests (rate limiting disabled)
-		return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS };
+		return { allowed: true, remaining: rateLimitMaxRequests };
 	}
 
 	const key = `rate_limit:${ip}`;
@@ -206,22 +221,22 @@ async function checkRateLimit(ip: string, kv: KVNamespace | undefined): Promise<
 		const stored = await kv.get(key);
 		if (!stored) {
 			// First request from this IP
-			await kv.put(key, JSON.stringify({ count: 1, resetAt: now + RATE_LIMIT_WINDOW }), {
-				expirationTtl: Math.floor(RATE_LIMIT_WINDOW / 1000),
+			await kv.put(key, JSON.stringify({ count: 1, resetAt: now + rateLimitWindow }), {
+				expirationTtl: Math.floor(rateLimitWindow / 1000),
 			});
-			return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - 1 };
+			return { allowed: true, remaining: rateLimitMaxRequests - 1 };
 		}
 
 		const { count, resetAt } = JSON.parse(stored);
 		if (now > resetAt) {
 			// Window expired, reset
-			await kv.put(key, JSON.stringify({ count: 1, resetAt: now + RATE_LIMIT_WINDOW }), {
-				expirationTtl: Math.floor(RATE_LIMIT_WINDOW / 1000),
+			await kv.put(key, JSON.stringify({ count: 1, resetAt: now + rateLimitWindow }), {
+				expirationTtl: Math.floor(rateLimitWindow / 1000),
 			});
-			return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - 1 };
+			return { allowed: true, remaining: rateLimitMaxRequests - 1 };
 		}
 
-		if (count >= RATE_LIMIT_MAX_REQUESTS) {
+		if (count >= rateLimitMaxRequests) {
 			return { allowed: false, remaining: 0 };
 		}
 
@@ -229,11 +244,11 @@ async function checkRateLimit(ip: string, kv: KVNamespace | undefined): Promise<
 		await kv.put(key, JSON.stringify({ count: count + 1, resetAt }), {
 			expirationTtl: Math.floor((resetAt - now) / 1000),
 		});
-		return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - count - 1 };
+		return { allowed: true, remaining: rateLimitMaxRequests - count - 1 };
 	} catch (error) {
 		console.error('Rate limit check failed:', error);
 		// On error, allow the request (fail open)
-		return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS };
+		return { allowed: true, remaining: rateLimitMaxRequests };
 	}
 }
 
@@ -334,8 +349,12 @@ ${data.message}
 		const result = await response.json().catch(() => ({}));
 		console.log('Email sent successfully:', result);
 		return { success: true };
-	} catch (error) {
-		console.error('Email sending error:', error);
+	} catch (error: unknown) {
+		console.error('Email sending error:', {
+			message: error instanceof Error ? error.message : 'An unknown error occurred',
+			stack: error instanceof Error ? error.stack : undefined,
+			error,
+		});
 		return {
 			success: false,
 			error: 'Failed to send email. Please try again later.',
@@ -416,10 +435,10 @@ export async function handleContactAPI(request: Request, env: Env): Promise<Resp
 	}
 
 	// Check rate limit (unless bypassed via header)
-	let rateLimit = { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS };
+	let rateLimit = { allowed: true, remaining: getRateLimitMaxRequests(env) };
 	if (!bypassRateLimit) {
 		const clientIP = getClientIP(request);
-		rateLimit = await checkRateLimit(clientIP, env.RATE_LIMIT_KV);
+		rateLimit = await checkRateLimit(clientIP, env);
 	}
 
 	if (!rateLimit.allowed) {
@@ -516,33 +535,25 @@ export default {
 
 		// For SPA routing: if the asset is not found (404), serve index.html
 		// This allows React Router to handle client-side routing
-		if (response.status === 404) {
-			// Determine if last path segment has an extension
-			const segments = url.pathname.split('/').filter(Boolean);
-			const lastSegment = segments.length > 0 ? segments[segments.length - 1] : '';
-			const hasExtension = lastSegment.includes('.');
-			if (!hasExtension && !url.pathname.startsWith('/api/')) {
-				// Serve index.html for SPA routes
-				const indexResponse = await env.ASSETS.fetch(
-					new Request(new URL('/index.html', request.url), {
-						method: request.method,
-						headers: request.headers,
-					})
-				);
+		const isApiRoute = url.pathname.startsWith('/api/');
+		const hasExtension = url.pathname.split('/').pop()?.includes('.') ?? false;
 
-				// If index.html exists, return it with proper Content-Type
-				if (indexResponse.status === 200) {
-					const newHeaders = new Headers(indexResponse.headers);
-					newHeaders.set("Content-Type", "text/html;charset=UTF-8");
-					return new Response(indexResponse.body, {
-						status: 200,
-						statusText: "OK",
-						headers: newHeaders,
-					});
-				}
+		if (response.status === 404 && !isApiRoute && !hasExtension) {
+			const indexResponse = await env.ASSETS.fetch(new Request(new URL('/index.html', request.url), request));
+			if (indexResponse.status === 200) {
+				const newHeaders = new Headers(indexResponse.headers);
+				newHeaders.set('Content-Type', 'text/html;charset=UTF-8');
+				return new Response(indexResponse.body, {
+					status: 200,
+					statusText: 'OK',
+					headers: newHeaders,
+				});
 			}
-			// If index.html also doesn't exist, return the 404
-			return response;
+		}
+
+		// If index.html also doesn't exist or it's not a 404, return the original response
+		if (response.status === 404) {
+			return new Response('Not Found', { status: 404 });
 		}
 
 		// Check if Content-Type header is missing

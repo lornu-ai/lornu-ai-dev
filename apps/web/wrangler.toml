@@ -25,6 +25,10 @@ id = "8f08c5bb53f44bbab031992ca3531429"
 [observability]
 enabled = true
 
+[vars]
+RATE_LIMIT_WINDOW_MS = "3600000" # 1 hour in milliseconds
+RATE_LIMIT_MAX_REQUESTS = "5"
+
 # Production domain routes
 # Note: Custom domains must be configured in Cloudflare dashboard first
 # Remove or modify these routes for development/staging environments
