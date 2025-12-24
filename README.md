@@ -1,4 +1,7 @@
-# Lornu AI
+# Lornu AI (Dev)
+
+**Environment:** Dev / Edge (Cloudflare)
+**Deployment Status:** Verified on `lornu-ai-dev`
 
 ## For Developers & AI Agents
 This repository is structured to be "AI-Native". 
@@ -11,4 +14,5 @@ All high-level context, architectural decisions, and coding standards are locate
 
 ## Project Structure
 - `.ai/`: AI context and documentation.
-- `src/`: Source code (To be created).
+- `apps/`: Web application and Workers.
+- `packages/`: Shared packages and Agent logic.
