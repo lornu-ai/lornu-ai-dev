@@ -46,6 +46,6 @@ This epic focuses on optimizing the `lornu-ai-dev` repository for rapid developm
 
 ## 5. Risk Management
 *   **Risk**: Fragmentation of core logic between repos.
-*   **Mitigation**: Strict adherence to the Weekly Sync; keeping the `backend/` and `packages/` directories as the "source of truth".
+*   **Mitigation**: Strict adherence to the Weekly Sync; keeping the `apps/web` (worker logic) and `packages/` directories as the "source of truth".
 *   **Risk**: Cloudflare-specific features leaking into the Enterprise repo.
 *   **Mitigation**: The pruning process in `lornu-ai` acts as a gatekeeper; we only pull logic, not environment-specific config.

@@ -12,6 +12,7 @@ dist
 dist-ssr
 *-dist
 *.local
+.wrangler/
 
 # npm files (project uses Bun)
 package-lock.json
