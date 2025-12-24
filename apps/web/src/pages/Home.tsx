@@ -199,7 +199,7 @@ export default function Home() {
               transition={{ duration: 0.8 }}
             >
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight">
-                <span className="gradient-text">Build the Future</span>
+                <span className="gradient-text">Build the Edge</span>
                 <br />
                 <span className="text-foreground">with AI</span>
               </h1>
