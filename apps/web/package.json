@@ -19,7 +19,8 @@
         "test:contact": "bun run scripts/test-contact-form.ts",
         "test:e2e": "playwright test",
         "test:e2e:ui": "playwright test --ui",
-        "test:e2e:smoke": "playwright test tests/e2e/smoke-test.spec.ts --project=chromium"
+        "test:e2e:smoke": "playwright test tests/e2e/smoke-test.spec.ts --project=chromium",
+        "wrangler": "wrangler"
     },
     "dependencies": {
         "@cloudflare/workers-types": "^4.20251225.0",
