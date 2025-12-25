@@ -8,7 +8,7 @@ interface ErrorResponse {
 
 // Mock Env for testing
 const createMockEnv = () => ({
-	ASSETS: { fetch: vi.fn() },
+	ASSETS: { fetch: vi.fn(), connect: vi.fn() },
 	RESEND_API_KEY: 'test-api-key',
 	CONTACT_EMAIL: 'test@example.com',
 	RATE_LIMIT_KV: {
@@ -37,7 +37,8 @@ describe('Contact Form API', () => {
 	afterEach(() => {
 		vi.restoreAllMocks()
 		// Restore original fetch if it exists
-		if (globalThis.fetch) {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		if ((globalThis as any).fetch) {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			delete (globalThis as any).fetch
 		}
@@ -50,7 +51,7 @@ describe('Contact Form API', () => {
 				method: 'OPTIONS',
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			expect(response.status).toBe(204)
 			expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*')
@@ -73,7 +74,7 @@ describe('Contact Form API', () => {
 				}),
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*')
 			expect(response.headers.get('Content-Type')).toContain('application/json')
@@ -87,7 +88,7 @@ describe('Contact Form API', () => {
 				body: 'x'.repeat(20000),
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			expect(response.status).toBe(413)
 			expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*')
@@ -107,7 +108,7 @@ describe('Contact Form API', () => {
 				}),
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			expect(response.status).toBe(413)
 			const data = (await response.json()) as ErrorResponse
@@ -127,7 +128,7 @@ describe('Contact Form API', () => {
 			})
 
 			// This should NOT return 413
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 			expect(response.status).not.toBe(413)
 		})
 
@@ -143,7 +144,7 @@ describe('Contact Form API', () => {
 				}),
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			// Should not return 413, should continue with validation
 			expect(response.status).not.toBe(413)
@@ -162,7 +163,7 @@ describe('Contact Form API', () => {
 				}),
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			expect(response.status).toBe(400)
 			const data = (await response.json()) as ErrorResponse
@@ -180,7 +181,7 @@ describe('Contact Form API', () => {
 				}),
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			expect(response.status).toBe(400)
 			const data = (await response.json()) as ErrorResponse
@@ -200,7 +201,7 @@ describe('Contact Form API', () => {
 				}),
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			expect(response.status).toBe(400)
 			const data = (await response.json()) as ErrorResponse
@@ -229,7 +230,7 @@ describe('Contact Form API', () => {
 					}),
 				})
 
-				const response = await handleContactAPI(request, env)
+				const response = await handleContactAPI(request, env as unknown as Env)
 
 				// Should not be 400 (validation error)
 				// May be 429 (rate limit), 500 (email send), but not validation
@@ -249,7 +250,7 @@ describe('Contact Form API', () => {
 				}),
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			expect(response.status).toBe(400)
 			const data = (await response.json()) as ErrorResponse
@@ -267,7 +268,7 @@ describe('Contact Form API', () => {
 				}),
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			expect(response.status).toBe(400)
 			const data = (await response.json()) as ErrorResponse
@@ -285,7 +286,7 @@ describe('Contact Form API', () => {
 				}),
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			expect(response.status).toBe(400)
 			const data = (await response.json()) as ErrorResponse
@@ -300,7 +301,7 @@ describe('Contact Form API', () => {
 				body: '{invalid json}',
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			expect(response.status).toBe(400)
 			const data = (await response.json()) as ErrorResponse
@@ -335,7 +336,7 @@ describe('Contact Form API', () => {
 				}),
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			// Should not reject - should sanitize and send
 			expect(response.status).not.toBe(400)
@@ -377,7 +378,7 @@ describe('Contact Form API', () => {
 				}),
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			// Should not reject - should sanitize and send
 			expect(response.status).not.toBe(400)
@@ -401,7 +402,7 @@ describe('Contact Form API', () => {
 				method: 'GET',
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			expect(response.status).toBe(405)
 			const data = (await response.json()) as ErrorResponse
@@ -414,7 +415,7 @@ describe('Contact Form API', () => {
 				method: 'PUT',
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			expect(response.status).toBe(405)
 		})
@@ -433,7 +434,7 @@ describe('Contact Form API', () => {
 				}),
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 
 			// Should not be 405
 			expect(response.status).not.toBe(405)
@@ -452,7 +453,7 @@ describe('Contact Form API', () => {
 				}),
 			})
 
-			const response = await handleContactAPI(request, env)
+			const response = await handleContactAPI(request, env as unknown as Env)
 			const data = (await response.json()) as ErrorResponse
 
 			expect(data).toHaveProperty('error')
@@ -480,7 +481,7 @@ describe('Contact Form API', () => {
 					method: testCase.method,
 				})
 
-				const response = await handleContactAPI(request, env)
+				const response = await handleContactAPI(request, env as unknown as Env)
 				expect(response.status).toBe(testCase.expectedStatus)
 			}
 		})
@@ -489,7 +490,7 @@ describe('Contact Form API', () => {
 
 describe('Static Assets and Routing', () => {
 	const makeEnv = () => ({
-		ASSETS: { fetch: vi.fn() },
+		ASSETS: { fetch: vi.fn(), connect: vi.fn() },
 		RESEND_API_KEY: 'test-api-key',
 	})
 
