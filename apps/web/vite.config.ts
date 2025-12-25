@@ -33,56 +33,6 @@ export default defineConfig({
     target: 'es2020', // Match TypeScript target for broader browser compatibility
     sourcemap: false, // Disable sourcemaps in production (faster builds, smaller output)
     // Note: minify: 'esbuild' and cssCodeSplit: true are already defaults in Vite 5+
-    rollupOptions: {
-      output: {
-        manualChunks: (id) => {
-          // Vendor chunks for better caching and code splitting
-          if (id.includes('node_modules')) {
-            // React core libraries - MUST be together to share context
-            if (
-              id.includes('/react/') ||
-              id.includes('/react-dom/') ||
-              id.includes('/react-is/') ||
-              id.includes('/scheduler/')
-            ) {
-              return 'vendor-react';
-            }
-            // React ecosystem packages that depend on React context
-            if (
-              id.includes('react-router') ||
-              id.includes('react-helmet-async') ||
-              id.includes('react-error-boundary') ||
-              id.includes('react-hook-form') ||
-              id.includes('next-themes') ||
-              id.includes('sonner') ||
-              id.includes('vaul') ||
-              id.includes('cmdk') ||
-              id.includes('embla-carousel-react')
-            ) {
-              return 'vendor-react-deps';
-            }
-            // Icon libraries
-            if (id.includes('@phosphor-icons') || id.includes('@heroicons') || id.includes('lucide-react')) {
-              return 'vendor-icons';
-            }
-            // Radix UI components
-            if (id.includes('@radix-ui')) {
-              return 'vendor-radix-ui';
-            }
-            // Animation library
-            if (id.includes('framer-motion')) {
-              return 'vendor-animations';
-            }
-            // Chart libraries
-            if (id.includes('recharts')) {
-              return 'vendor-charts';
-            }
-            // Other vendor libraries (non-React)
-            return 'vendor-misc';
-          }
-        }
-      }
-    },
     chunkSizeWarningLimit: 600, // TODO: Temporarily increased while optimizing. Revisit and reduce to 500 (default) or lower once bundle optimizations are complete.
   },
 });
