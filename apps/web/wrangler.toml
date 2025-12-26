@@ -9,6 +9,7 @@
 name = "lornu-ai"
 main = "worker.ts"
 compatibility_date = "2024-11-24"
+account_id = "1d361f061ebf3d1a293900bdb815db26"
 
 # Asset binding: Serves the built React app (Vite output from dist/)
 # The worker in worker.ts handles requests and ensures correct Content-Type headers
