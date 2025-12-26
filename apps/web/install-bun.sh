@@ -10,12 +10,10 @@ export PATH="${HOME}/.bun/bin:${PATH}"
 
 if command -v bun >/dev/null 2>&1; then
   echo "Bun is already installed. Version: $(bun --version)"
-  exit 0
-fi
-
-echo "Installing Bun..."
-TMP_SCRIPT="/tmp/bun_install.sh"
-curl -fsSL https://bun.sh/install -o "${TMP_SCRIPT}"
+else
+  echo "Installing Bun..."
+  TMP_SCRIPT="/tmp/bun_install.sh"
+  curl -fsSL https://bun.sh/install -o "${TMP_SCRIPT}"
 
 # If a checksum is provided, verify integrity of the installer
 if [[ -n "${BUN_INSTALL_SHA256:-}" ]]; then
@@ -29,10 +27,15 @@ if [[ -n "${BUN_INSTALL_SHA256:-}" ]]; then
   fi
 fi
 
-# Allow version pinning if the installer supports it
-# The official script respects BUN_INSTALL environment for path;
-# version pinning may be supported via environment (implementation-dependent).
-chmod +x "${TMP_SCRIPT}"
-"${TMP_SCRIPT}"
+  # Allow version pinning if the installer supports it
+  # The official script respects BUN_INSTALL environment for path;
+  # version pinning may be supported via environment (implementation-dependent).
+  chmod +x "${TMP_SCRIPT}"
+  "${TMP_SCRIPT}"
 
-echo "Bun installed. Version: $(bun --version)"
+  echo "Bun installed. Version: $(bun --version)"
+fi
+
+# Install dependencies
+echo "Installing dependencies..."
+bun install
