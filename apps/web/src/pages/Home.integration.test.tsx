@@ -24,7 +24,8 @@ describe('Home Page - Contact Form Integration', () => {
 
   beforeEach(() => {
     mockFetch = vi.fn()
-    global.fetch = mockFetch
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    global.fetch = mockFetch as any
     vi.clearAllMocks()
   })
 

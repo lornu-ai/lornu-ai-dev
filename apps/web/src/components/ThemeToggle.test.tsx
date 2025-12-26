@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 import { ThemeProvider, useTheme } from '../contexts/ThemeContext';
 import ThemeToggle from './ThemeToggle';
 
