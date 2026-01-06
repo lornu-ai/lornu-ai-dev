@@ -1,4 +1,3 @@
-
 export interface Env {
 	ASSETS: Fetcher;
 	RESEND_API_KEY: string;
